@@ -1,0 +1,54 @@
+{
+  "name": "Гипертрофия 4дн",
+  "days": [
+    {
+      "id": "A",
+      "name": "Грудь + Трицепс",
+      "dayOfWeek": 1,
+      "exercises": [
+        { "exerciseId": "incline-db-press-30", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "chest-press-machine", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120 },
+        { "exerciseId": "pec-deck", "sets": 4, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "cable-pushdown-rope", "sets": 4, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "cable-overhead-tricep-extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 90 }
+      ]
+    },
+    {
+      "id": "B",
+      "name": "Спина + Бицепс",
+      "dayOfWeek": 3,
+      "exercises": [
+        { "exerciseId": "lat-pulldown-wide", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "chest-supported-row", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "seated-cable-row-v", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "hammer-curl", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "biceps-curl-machine", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 0, "rirMax": 1, "restSec": 60 }
+      ]
+    },
+    {
+      "id": "C",
+      "name": "Плечи",
+      "dayOfWeek": 5,
+      "exercises": [
+        { "exerciseId": "db-shoulder-press-seated", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120 },
+        { "exerciseId": "cable-lateral-raise-unilateral", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "reverse-pec-deck", "sets": 4, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "cable-face-pull", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "db-shrug", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 }
+      ]
+    },
+    {
+      "id": "D",
+      "name": "Ноги + Пресс",
+      "dayOfWeek": 6,
+      "exercises": [
+        { "exerciseId": "leg-press", "sets": 4, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "lying-leg-curl", "sets": 5, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "leg-extension", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "barbell-glute-bridge", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "calf-raise-leg-press", "sets": 4, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 0, "restSec": 60 },
+        { "exerciseId": "hanging-leg-raise", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 60 }
+      ]
+    }
+  ]
+}
