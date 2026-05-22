@@ -545,6 +545,33 @@
       "Слишком большой вес — невозможно округлить спину, движение становится тягой"
     ]
   },
+  "cable-rear-delt-row": {
+    "id": "cable-rear-delt-row",
+    "name": "Cable Rear Delt Row",
+    "equipment": "cable",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["rear_delts"],
+    "secondaryMuscles": ["mid_back", "traps"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Rear_Delt_Row/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Rear_Delt_Row/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=cable+rear+delt+row+jeff+nippard",
+    "cues": [
+      "Канат на верхнем блоке, хват сверху (ладони вниз)",
+      "Отклонись назад на 15-20°, корпус жёсткий и неподвижен",
+      "Тяни локтями строго назад-в-стороны параллельно полу — локти на уровне плеч",
+      "Концы каната разводи в стороны, не тяни к лицу — это НЕ face pull",
+      "Сжимай задние дельты в верхней точке 1 сек, опускай контролируемо"
+    ],
+    "mistakes": [
+      "Тяга к лицу с локтями вверх и вперёд — превращается в face pull, акцент на задние дельты теряется",
+      "Локти опущены вниз — становится обычной горизонтальной тягой, ромбы перебирают работу",
+      "Раскачивание корпусом — инерция вместо изоляции задних дельт",
+      "Сведение лопаток силой в начале — работают трапеции и ромбы, дельты пассивны",
+      "Картинка показывает паттерн со штангой — у тебя канат верхнего блока, тело и локти те же"
+    ]
+  },
   "hanging-leg-raise": {
     "id": "hanging-leg-raise",
     "name": "Подъём ног в висе",

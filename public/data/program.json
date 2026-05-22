@@ -33,7 +33,7 @@
         { "exerciseId": "db-shoulder-press-seated", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120 },
         { "exerciseId": "cable-lateral-raise-unilateral", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 60 },
         { "exerciseId": "reverse-pec-deck", "sets": 4, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
-        { "exerciseId": "cable-face-pull", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
+        { "exerciseId": "cable-rear-delt-row", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 },
         { "exerciseId": "db-shrug", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 60 }
       ]
     },
