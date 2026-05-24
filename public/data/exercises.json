@@ -554,12 +554,14 @@
     "primaryMuscles": ["rear_delts"],
     "secondaryMuscles": ["mid_back", "traps"],
     "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg",
     "youtubeUrl": "https://www.youtube.com/results?search_query=cable+rear+delt+row+jeff+nippard",
     "cues": [
+      "⚠️ Картинка похожа на face pull (тот же setup) — но локти держи строго на уровне плеч, концы каната мимо ушей в стороны",
       "Канат на верхнем блоке (выше уровня плеч), хват сверху ладонями вниз",
       "Встань близко к блоку, отклонись назад на 15-20°, корпус жёсткий и неподвижен",
-      "Тяни локтями строго назад-в-стороны параллельно полу — локти на уровне плеч",
-      "Концы каната проходят мимо ушей в стороны, НЕ к лицу — это НЕ face pull",
+      "Тяни локтями строго назад-в-стороны параллельно полу",
       "Сжимай задние дельты в верхней точке 1 сек, опускай контролируемо"
     ],
     "mistakes": [
