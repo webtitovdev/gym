@@ -19,7 +19,7 @@
       "name": "Full Body",
       "dayOfWeek": 3,
       "exercises": [
-        { "exerciseId": "chest-supported-row", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 180 },
+        { "exerciseId": "one-arm-db-row", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 180 },
         { "exerciseId": "chest-press-machine", "sets": 4, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 180 },
         { "exerciseId": "cable-lateral-raise-unilateral", "sets": 4, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 120 },
         { "exerciseId": "barbell-glute-bridge", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 180 },
