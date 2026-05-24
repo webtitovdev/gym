@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'preact/hooks';
-import { loadExercises, muscleRu, equipmentRu } from '../lib/loadData';
-import { Link } from '../lib/hashRouter';
-import { ExerciseStats } from '../components/ExerciseStats';
-import { ExerciseMedia } from '../components/ExerciseMedia';
+import { loadExercises, equipmentRu } from '../lib/loadData';
+import { pal } from '../lib/designTokens';
 import { MuscleDiagram } from '../components/MuscleDiagram';
+import { ExerciseGif } from '../components/ExerciseGif';
+import { ExerciseStats } from '../components/ExerciseStats';
+import { toDesignMuscleKeys, designMuscleRu } from '../lib/illustrations';
 import type { ExerciseLibrary } from '../types';
 
 export function ExerciseView({ exerciseId }: { exerciseId: string }) {
@@ -13,123 +14,151 @@ export function ExerciseView({ exerciseId }: { exerciseId: string }) {
     loadExercises().then(setLibrary);
   }, []);
 
-  if (!library) return <div class="p-4 text-zinc-500">Загрузка...</div>;
+  if (!library) return <div style={{ padding: 20, color: pal.mute }}>Загрузка...</div>;
   const ex = library[exerciseId];
   if (!ex) {
     return (
-      <div class="p-4">
-        <Link href="/" class="text-zinc-400 active:text-white">
-          ← Главная
-        </Link>
-        <div class="mt-4 text-rose-400">Упражнение не найдено</div>
+      <div style={{ padding: 20 }}>
+        <a href="#/" style={{ color: pal.mute, textDecoration: 'none' }}>← Главная</a>
+        <div style={{ marginTop: 16, color: pal.terraD }}>Упражнение не найдено</div>
       </div>
     );
   }
 
+  const primaryKeys = toDesignMuscleKeys(ex.primaryMuscles);
+
   return (
-    <div class="min-h-screen bg-black text-white pb-12">
-      <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 px-5 py-3 z-10">
-        <button
-          onClick={() => history.back()}
-          class="text-sm text-zinc-400 active:text-white"
-        >
-          ← Назад
+    <div style={{ minHeight: '100vh', background: pal.bg, paddingBottom: 32, maxWidth: 480, margin: '0 auto' }}>
+      {/* Top bar */}
+      <div style={{ padding: '34px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <button type="button" onClick={() => history.back()} style={iconBtn()}>
+          <svg width="9" height="16" viewBox="0 0 9 16"><path d="M8 1L1 8l7 7" stroke={pal.ink} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
         </button>
-        <h1 class="text-xl font-bold mt-1">{ex.name}</h1>
-        <div class="text-xs text-zinc-500 mt-0.5">
-          {equipmentRu(ex.equipment)}
-          {ex.unilateral ? ' · одной рукой' : ''}
+        <div style={{ fontSize: 11, color: pal.mute, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+          Упражнение
         </div>
-      </header>
+        <div style={{ width: 36 }} />
+      </div>
 
-      <ExerciseMedia
-        imageUrl={ex.imageUrl}
-        imageUrlEnd={ex.imageUrlEnd}
-        altText={ex.name}
-      />
+      {/* Animated illustration */}
+      <div style={{ padding: '20px 20px 0' }}>
+        <ExerciseGif exerciseId={ex.id} height={160} />
+      </div>
 
-      <div class="px-4 mt-5 space-y-6">
-        <section>
-          <h2 class="px-1 text-[11px] uppercase tracking-[0.15em] text-emerald-400 font-semibold mb-2">
+      {/* Title + tags */}
+      <div style={{ padding: '20px 20px 0' }}>
+        <div style={{ fontSize: 22, fontWeight: 900, letterSpacing: -0.6, lineHeight: 1.1, color: pal.ink }}>
+          {ex.name}
+        </div>
+        <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', marginTop: 10 }}>
+          {primaryKeys.slice(0, 3).map((m) => (
+            <span key={m} style={{ fontSize: 10, fontWeight: 800, color: pal.ink2, background: pal.bgSoft, padding: '4px 10px', borderRadius: 100, letterSpacing: 0.3 }}>
+              {designMuscleRu(m)}
+            </span>
+          ))}
+          <span style={{ fontSize: 10, fontWeight: 800, color: pal.terraD, background: pal.peachL, padding: '4px 10px', borderRadius: 100, textTransform: 'capitalize' }}>
+            {equipmentRu(ex.equipment)}
+          </span>
+          {ex.unilateral && (
+            <span style={{ fontSize: 10, fontWeight: 800, color: pal.ink2, background: pal.lavender, padding: '4px 10px', borderRadius: 100 }}>
+              одной рукой
+            </span>
+          )}
+        </div>
+      </div>
+
+      {/* Muscle map + best stat */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', gap: 10 }}>
+        <div style={{ flex: 1, background: pal.card, borderRadius: 16, padding: '10px 12px', border: `1px solid ${pal.line}`, display: 'flex', alignItems: 'center', gap: 12 }}>
+          <MuscleDiagram primary={ex.primaryMuscles} secondary={ex.secondaryMuscles} size={64} />
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <div style={{ fontSize: 10, color: pal.mute, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5 }}>Основные</div>
+            <div style={{ fontSize: 13, fontWeight: 800, marginTop: 2, lineHeight: 1.2 }}>
+              {primaryKeys.map(designMuscleRu).join(', ')}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats / progress chart */}
+      <div style={{ padding: '16px 20px 0' }}>
+        <ExerciseStats exerciseId={ex.id} />
+      </div>
+
+      {/* Cues */}
+      {ex.cues.length > 0 && (
+        <div style={{ padding: '24px 20px 0' }}>
+          <div style={{ fontSize: 11, color: pal.mute, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
             Техника
-          </h2>
-          <ul class="space-y-2">
-            {ex.cues.map((cue, i) => (
-              <li
-                key={i}
-                class="flex gap-3 p-3.5 bg-zinc-900/80 rounded-xl border border-zinc-800"
-              >
-                <div class="shrink-0 w-6 h-6 rounded-full bg-emerald-950 text-emerald-400 text-xs font-bold flex items-center justify-center tabular-nums">
-                  {i + 1}
-                </div>
-                <div class="text-[15px] leading-relaxed">{cue}</div>
-              </li>
+          </div>
+          <div style={{ background: pal.card, borderRadius: 18, padding: '14px 16px', border: `1px solid ${pal.line}` }}>
+            {ex.cues.map((c, i) => (
+              <div key={i} style={{ display: 'flex', gap: 10, fontSize: 13, fontWeight: 600, color: pal.ink2, lineHeight: 1.45, marginTop: i === 0 ? 0 : 8 }}>
+                <span style={{ color: pal.terra, fontWeight: 900, lineHeight: 1.4 }}>·</span>
+                <span>{c}</span>
+              </div>
             ))}
-          </ul>
-        </section>
+          </div>
+        </div>
+      )}
 
-        <section>
-          <h2 class="px-1 text-[11px] uppercase tracking-[0.15em] text-rose-400 font-semibold mb-2">
+      {/* Mistakes */}
+      {ex.mistakes.length > 0 && (
+        <div style={{ padding: '16px 20px 0' }}>
+          <div style={{ fontSize: 11, color: pal.plum, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
             Не делай
-          </h2>
-          <ul class="space-y-2">
+          </div>
+          <div style={{ background: pal.rose, borderRadius: 18, padding: '14px 16px' }}>
             {ex.mistakes.map((m, i) => (
-              <li
-                key={i}
-                class="flex gap-3 p-3.5 bg-rose-950/30 rounded-xl border border-rose-900/40"
-              >
-                <div class="shrink-0 w-6 h-6 rounded-full bg-rose-950 text-rose-400 text-sm font-bold flex items-center justify-center">
-                  ✕
-                </div>
-                <div class="text-[15px] leading-relaxed">{m}</div>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        <section>
-          <h2 class="px-1 text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-semibold mb-3">
-            Целевые мышцы
-          </h2>
-          <div class="p-3 bg-zinc-900/40 rounded-xl border border-zinc-900">
-            <MuscleDiagram
-              primary={ex.primaryMuscles}
-              secondary={ex.secondaryMuscles}
-            />
-          </div>
-          <div class="flex flex-wrap gap-2 mt-3">
-            {ex.primaryMuscles.map((m) => (
-              <span
-                key={m}
-                class="px-3 py-1.5 bg-emerald-950/60 text-emerald-300 rounded-full text-xs border border-emerald-900/60 font-medium"
-              >
-                {muscleRu(m)}
-              </span>
-            ))}
-            {ex.secondaryMuscles.map((m) => (
-              <span
-                key={m}
-                class="px-3 py-1.5 bg-zinc-900 text-zinc-400 rounded-full text-xs border border-zinc-800"
-              >
-                {muscleRu(m)}
-              </span>
+              <div key={i} style={{ display: 'flex', gap: 10, fontSize: 13, fontWeight: 600, color: pal.plum, lineHeight: 1.45, marginTop: i === 0 ? 0 : 8 }}>
+                <span style={{ fontWeight: 900 }}>✕</span>
+                <span>{m}</span>
+              </div>
             ))}
           </div>
-        </section>
+        </div>
+      )}
 
-        {ex.youtubeUrl && (
+      {/* YouTube link */}
+      {ex.youtubeUrl && (
+        <div style={{ padding: '20px 20px 0' }}>
           <a
             href={ex.youtubeUrl}
             target="_blank"
             rel="noopener noreferrer"
-            class="block p-4 bg-zinc-900 rounded-xl border border-zinc-800 active:bg-zinc-800 text-center text-zinc-300"
+            style={{
+              display: 'block',
+              padding: '14px 0',
+              background: pal.card,
+              border: `1.5px solid ${pal.line}`,
+              borderRadius: 22,
+              textAlign: 'center',
+              color: pal.ink,
+              textDecoration: 'none',
+              fontSize: 13,
+              fontWeight: 800,
+            }}
           >
-            ▶ Открыть разбор на YouTube
+            ▶ Открыть на YouTube
           </a>
-        )}
-
-        <ExerciseStats exerciseId={ex.id} />
-      </div>
+        </div>
+      )}
     </div>
   );
+}
+
+function iconBtn(): import('preact').JSX.CSSProperties {
+  return {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    background: pal.card,
+    border: `1px solid ${pal.line}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: pal.ink,
+    textDecoration: 'none',
+    cursor: 'pointer',
+  };
 }

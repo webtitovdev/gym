@@ -2,10 +2,13 @@ import { useEffect, useState } from 'preact/hooks';
 import { loadProgram, loadExercises } from '../lib/loadData';
 import { Link, navigate } from '../lib/hashRouter';
 import { startSession } from '../db/queries';
-import type { Program, ExerciseLibrary } from '../types';
-
-const CYR_LETTER: Record<string, string> = { A: 'А', B: 'Б', C: 'В', D: 'Г' };
-const displayLetter = (id: string) => CYR_LETTER[id] || id;
+import { db } from '../db/schema';
+import { useLive } from '../lib/useLive';
+import { pal, dayCode } from '../lib/designTokens';
+import { MuscleDiagram, MuscleDot } from '../components/MuscleDiagram';
+import { toDesignMuscleKeys, designMuscleRu, type DesignMuscleKey } from '../lib/illustrations';
+import { formatRange } from '../lib/format';
+import type { Program, ExerciseLibrary, MuscleGroup } from '../types';
 
 export function DayDetail({ dayId }: { dayId: string }) {
   const [program, setProgram] = useState<Program | null>(null);
@@ -16,112 +19,175 @@ export function DayDetail({ dayId }: { dayId: string }) {
     loadExercises().then(setLibrary);
   }, []);
 
+  const sessionCount = useLive(async () => {
+    return db.sessions.where('completedAt').above(0).count();
+  });
+
   if (!program || !library) {
-    return <div class="p-4 text-zinc-500">Загрузка...</div>;
+    return <div style={{ padding: 20, color: pal.mute }}>Загрузка...</div>;
   }
 
   const day = program.days.find((d) => d.id === dayId);
   if (!day) {
     return (
-      <div class="p-4">
-        <Link href="/" class="text-zinc-400 active:text-white">
-          ← Главная
-        </Link>
-        <div class="mt-4 text-rose-400">День не найден</div>
+      <div style={{ padding: 20 }}>
+        <Link href="/" class="text-sm" >← Главная</Link>
+        <div style={{ marginTop: 16, color: pal.terraD }}>День не найден</div>
       </div>
     );
   }
 
+  // Aggregate primary muscles for the day → design keys
+  const primaryGroups: MuscleGroup[] = [];
+  const secondaryGroups: MuscleGroup[] = [];
+  for (const pe of day.exercises) {
+    const ex = library[pe.exerciseId];
+    if (!ex) continue;
+    primaryGroups.push(...ex.primaryMuscles);
+    secondaryGroups.push(...ex.secondaryMuscles);
+  }
+  const allKeys: DesignMuscleKey[] = toDesignMuscleKeys([...primaryGroups, ...secondaryGroups]);
   const totalSets = day.exercises.reduce((s, e) => s + e.sets, 0);
+  const estMin = Math.round(totalSets * 2.5);
+
+  const start = async () => {
+    const id = await startSession(day.id);
+    navigate(`/session/${id}`);
+  };
 
   return (
-    <div class="min-h-screen bg-black text-white pb-12">
-      <header class="sticky top-0 bg-black/90 backdrop-blur-md border-b border-zinc-900 px-5 py-3 z-10">
-        <Link href="/" class="text-sm text-zinc-400 active:text-white">
-          ← Главная
-        </Link>
-        <div class="flex items-baseline gap-3 mt-1">
-          <h1 class="text-2xl font-bold">День {displayLetter(day.id)}</h1>
-          <div class="text-zinc-400">{day.name}</div>
+    <div style={{ minHeight: '100vh', background: pal.bg, paddingBottom: 110, maxWidth: 480, margin: '0 auto' }}>
+      {/* Header */}
+      <div style={{ padding: '34px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <a href="#/" style={iconBtn()}>
+          <svg width="9" height="16" viewBox="0 0 9 16"><path d="M8 1L1 8l7 7" stroke={pal.ink} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </a>
+        <div style={{ fontSize: 12, color: pal.mute, fontWeight: 700, letterSpacing: 0.5 }}>
+          СЕССИЯ {(sessionCount ?? 0) + 1}
         </div>
-        <div class="text-xs text-zinc-500 mt-1">
-          {day.exercises.length} упражнений · {totalSets} сетов
-        </div>
-      </header>
-
-      <div class="px-4 mt-4">
-        <button
-          type="button"
-          onClick={async () => {
-            const sessionId = await startSession(day.id);
-            navigate(`/session/${sessionId}`);
-          }}
-          class="w-full h-14 bg-emerald-600 active:bg-emerald-700 rounded-xl text-white font-bold text-lg shadow-lg shadow-emerald-900/40"
-        >
-          ▶ Начать тренировку
-        </button>
+        <div style={{ ...iconBtn(), fontWeight: 900, fontSize: 16 }}>···</div>
       </div>
 
-      <ol class="px-4 mt-4 space-y-3">
-        {day.exercises.map((pe, idx) => {
+      {/* Title + muscle map */}
+      <div style={{ padding: '24px 20px 0', display: 'flex', alignItems: 'flex-start', gap: 14 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 11, color: pal.peachD, fontWeight: 900, letterSpacing: 1.5, textTransform: 'uppercase' }}>
+            Сегодня
+          </div>
+          <div style={{ fontSize: 32, fontWeight: 900, letterSpacing: -1, marginTop: 4, lineHeight: 1, color: pal.ink }}>
+            Full Body<br/>{dayCode(day.id)}.
+          </div>
+          <div style={{ fontSize: 12, color: pal.mute, fontWeight: 700, marginTop: 8 }}>
+            {day.name}
+          </div>
+        </div>
+        <div style={{ background: pal.bgSoft, borderRadius: 18, padding: 10 }}>
+          <MuscleDiagram primary={primaryGroups} secondary={secondaryGroups} size={72} />
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', gap: 8 }}>
+        {[[String(estMin), 'мин'], [String(day.exercises.length), 'упр'], [String(totalSets), 'сетов']].map(([v, l], i) => (
+          <div key={i} style={{ flex: 1, background: pal.card, borderRadius: 16, padding: '10px 12px', border: `1px solid ${pal.line}` }}>
+            <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: -0.5, color: pal.ink, fontVariantNumeric: 'tabular-nums' }}>{v}</div>
+            <div style={{ fontSize: 10, color: pal.mute, fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5 }}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Muscle chips */}
+      <div style={{ padding: '16px 20px 0', display: 'flex', gap: 6, flexWrap: 'wrap' }}>
+        {allKeys.map((m) => (
+          <span key={m} style={{ fontSize: 11, fontWeight: 800, color: pal.ink2, background: pal.bgSoft, padding: '4px 10px', borderRadius: 100, letterSpacing: 0.3 }}>
+            {designMuscleRu(m)}
+          </span>
+        ))}
+      </div>
+
+      {/* Exercise list */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', flexDirection: 'column', gap: 8 }}>
+        {day.exercises.map((pe, i) => {
           const ex = library[pe.exerciseId];
           if (!ex) {
             return (
-              <li
-                key={pe.exerciseId}
-                class="p-4 bg-rose-950/40 rounded-xl border border-rose-900/50 text-rose-300"
-              >
+              <div key={pe.exerciseId} style={{ padding: 12, background: pal.rose, borderRadius: 16, color: pal.plum }}>
                 Упражнение не найдено: {pe.exerciseId}
-              </li>
+              </div>
             );
           }
           return (
-            <li key={pe.exerciseId}>
-              <Link
-                href={`/exercise/${ex.id}`}
-                class="block p-4 bg-zinc-900/80 rounded-xl border border-zinc-800 active:bg-zinc-800 transition-colors"
-              >
-                <div class="flex items-baseline gap-3">
-                  <div class="text-zinc-500 text-sm font-mono tabular-nums w-5">
-                    {idx + 1}
-                  </div>
-                  <div class="font-semibold flex-1">{ex.name}</div>
-                  <div class="text-zinc-600 text-xs">→</div>
+            <a
+              key={pe.exerciseId}
+              href={`#/exercise/${ex.id}`}
+              style={{
+                background: pal.card,
+                borderRadius: 16,
+                padding: '12px 14px',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 11,
+                border: `1px solid ${pal.line}`,
+                textDecoration: 'none',
+                color: pal.ink,
+              }}
+            >
+              <div style={{ width: 22, fontSize: 11, fontWeight: 900, color: pal.muteSoft, fontFamily: 'ui-monospace,monospace' }}>
+                {String(i + 1).padStart(2, '0')}
+              </div>
+              <MuscleDot primary={ex.primaryMuscles} secondary={ex.secondaryMuscles} size={28} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ fontSize: 13, fontWeight: 800, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                  {ex.name}
                 </div>
-                <div class="mt-3 ml-8 flex flex-wrap gap-x-5 gap-y-1.5 text-sm">
-                  <Stat label="подходы" value={String(pe.sets)} />
-                  <Stat
-                    label="повторы"
-                    value={
-                      pe.repsMin === pe.repsMax
-                        ? String(pe.repsMin)
-                        : `${pe.repsMin}–${pe.repsMax}`
-                    }
-                  />
-                  <Stat
-                    label="RIR"
-                    value={
-                      pe.rirMin === pe.rirMax
-                        ? String(pe.rirMin)
-                        : `${pe.rirMin}–${pe.rirMax}`
-                    }
-                  />
-                  <Stat label="отдых" value={`${pe.restSec}с`} />
+                <div style={{ fontSize: 11, color: pal.mute, fontWeight: 700, marginTop: 1 }}>
+                  {pe.sets} × {formatRange(pe.repsMin, pe.repsMax)} · RIR {formatRange(pe.rirMin, pe.rirMax)} · {pe.restSec}с
                 </div>
-              </Link>
-            </li>
+              </div>
+              <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke={pal.muteSoft} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </a>
           );
         })}
-      </ol>
+      </div>
+
+      {/* CTA */}
+      <div style={{ padding: '24px 20px 0' }}>
+        <button
+          type="button"
+          onClick={start}
+          style={{
+            width: '100%',
+            padding: '16px 0',
+            background: pal.ink,
+            color: pal.peachL,
+            border: 'none',
+            borderRadius: 22,
+            fontFamily: 'inherit',
+            fontWeight: 900,
+            fontSize: 15,
+            letterSpacing: 0.5,
+            boxShadow: '0 10px 24px rgba(42,36,33,0.25)',
+            cursor: 'pointer',
+          }}
+        >
+          Начать тренировку →
+        </button>
+      </div>
     </div>
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
-  return (
-    <div class="flex items-baseline gap-1.5">
-      <span class="text-zinc-500 text-xs">{label}</span>
-      <span class="font-mono tabular-nums text-white">{value}</span>
-    </div>
-  );
+function iconBtn(): import('preact').JSX.CSSProperties {
+  return {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    background: pal.card,
+    border: `1px solid ${pal.line}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: pal.ink,
+    textDecoration: 'none',
+  };
 }

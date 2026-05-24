@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 html, body {
-  background: #000;
-  color: #fff;
+  background: #FBF7F1;
+  color: #2A2421;
   min-height: 100vh;
   min-height: 100dvh;
 }
@@ -13,7 +13,7 @@ body {
   -webkit-tap-highlight-color: transparent;
   -webkit-touch-callout: none;
   overscroll-behavior: none;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  font-family: "Nunito", "SF Pro Rounded", -apple-system, "Inter", system-ui, sans-serif;
   padding-top: env(safe-area-inset-top);
   padding-bottom: env(safe-area-inset-bottom);
 }
@@ -21,8 +21,16 @@ body {
 button, a {
   -webkit-user-select: none;
   user-select: none;
+  font-family: inherit;
 }
 
 .tabular-nums {
   font-variant-numeric: tabular-nums;
 }
+
+/* Exercise GIF — 2-frame crossfade */
+@keyframes ex-toggle { 0%, 48% { opacity: 1 } 50%, 100% { opacity: 0 } }
+@keyframes ex-pulse  { 0%, 100% { opacity: .4 } 50% { opacity: 1 } }
+.ex-frame-a { animation: ex-toggle 1.6s linear infinite; }
+.ex-frame-b { animation: ex-toggle 1.6s linear infinite; animation-direction: reverse; }
+.ex-pulse-dot { animation: ex-pulse 1.6s ease-in-out infinite; }

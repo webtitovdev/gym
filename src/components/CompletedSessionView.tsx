@@ -1,10 +1,10 @@
 import type { SetLogRecord, SessionRecord } from '../db/schema';
-import type { ExerciseLibrary, Day } from '../types';
-import { Link } from '../lib/hashRouter';
-import { formatWeight, formatRange } from '../lib/format';
+import type { ExerciseLibrary, Day, MuscleGroup } from '../types';
+import { pal, dayCode, DOW_RU_SHORT } from '../lib/designTokens';
+import { MuscleDiagram, MuscleDot } from './MuscleDiagram';
+import { formatVolume } from '../lib/stats';
 
-const CYR_LETTER: Record<string, string> = { A: 'А', B: 'Б', C: 'В', D: 'Г' };
-const displayLetter = (id: string) => CYR_LETTER[id] || id;
+const MONTH_RU = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
 interface Props {
   session: SessionRecord;
@@ -15,115 +15,110 @@ interface Props {
 
 export function CompletedSessionView({ session, day, library, sets }: Props) {
   const date = new Date(session.completedAt);
-  const elapsed = Math.round((session.completedAt - session.startedAt) / 60000);
-  const totalPlannedSets = day.exercises.reduce((s, e) => s + e.sets, 0);
+  const mins = Math.round((session.completedAt - session.startedAt) / 60000);
+  const totalPlanned = day.exercises.reduce((s, e) => s + e.sets, 0);
+  const totalVolume = sets.reduce((acc, s) => acc + s.weight * s.reps, 0);
+
+  // Aggregate worked muscles
+  const primary: MuscleGroup[] = [];
+  const secondary: MuscleGroup[] = [];
+  for (const s of sets) {
+    const ex = library[s.exerciseId];
+    if (!ex) continue;
+    primary.push(...ex.primaryMuscles);
+    secondary.push(...ex.secondaryMuscles);
+  }
 
   return (
-    <div class="min-h-screen bg-black text-white pb-12">
-      <header class="sticky top-0 bg-black/95 backdrop-blur-md border-b border-zinc-900 px-4 py-3 z-10">
-        <div class="flex items-center gap-3 text-sm">
-          <Link href="/" class="text-zinc-400 active:text-white">
-            ← Главная
-          </Link>
-          <span class="text-zinc-700">·</span>
-          <Link href="/history" class="text-zinc-400 active:text-white">
-            История
-          </Link>
+    <div style={{ minHeight: '100vh', background: pal.bg, paddingBottom: 24, maxWidth: 480, margin: '0 auto' }}>
+      {/* Header */}
+      <div style={{ padding: '34px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <a href="#/" style={iconBtn()}>
+          <svg width="9" height="16" viewBox="0 0 9 16"><path d="M8 1L1 8l7 7" stroke={pal.ink} strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </a>
+        <div style={{ fontSize: 11, color: pal.mute, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase' }}>
+          {DOW_RU_SHORT[date.getDay()]} · {date.getDate()} {MONTH_RU[date.getMonth()]}
         </div>
-        <div class="flex items-baseline gap-3 mt-1">
-          <h1 class="text-xl font-bold">День {displayLetter(day.id)}</h1>
-          <div class="text-zinc-400 truncate">{day.name}</div>
-        </div>
-        <div class="text-xs text-zinc-500 mt-1 tabular-nums">
-          {date.toLocaleDateString('ru-RU', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-          })}
-          {' · '}
-          {date.toLocaleTimeString('ru-RU', {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
-          {' · '}
-          {elapsed}мин · {sets.length}/{totalPlannedSets} сетов
-        </div>
-      </header>
+        <div style={{ width: 36 }} />
+      </div>
 
-      <div class="px-4 mt-4 space-y-6">
-        {day.exercises.map((pe, i) => {
-          const ex = library[pe.exerciseId];
-          const exSets = sets
-            .filter((s) => s.exerciseId === pe.exerciseId)
-            .sort((a, b) => a.setIndex - b.setIndex);
-          return (
-            <section key={pe.exerciseId}>
-              <Link
-                href={`/exercise/${pe.exerciseId}`}
-                class="flex items-baseline justify-between active:opacity-60 px-1"
-              >
-                <div class="flex items-baseline gap-2 min-w-0">
-                  <div class="text-zinc-500 text-sm font-mono tabular-nums">
-                    {i + 1}.
+      {/* Title + map */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', alignItems: 'flex-start', gap: 12 }}>
+        <div style={{ flex: 1 }}>
+          <div style={{ fontSize: 26, fontWeight: 900, letterSpacing: -0.8, lineHeight: 1, color: pal.ink }}>
+            Full Body {dayCode(day.id)}
+          </div>
+          <div style={{ fontSize: 12, color: pal.mute, fontWeight: 700, marginTop: 4 }}>
+            {day.name}
+          </div>
+        </div>
+        <div style={{ background: pal.bgSoft, borderRadius: 14, padding: 8 }}>
+          <MuscleDiagram primary={primary} secondary={secondary} size={56} />
+        </div>
+      </div>
+
+      {/* Stats row */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', gap: 7 }}>
+        {[
+          [`${mins}м`, 'Время', pal.card],
+          [`${sets.length}/${totalPlanned}`, 'Сетов', pal.card],
+          [formatVolume(Math.round(totalVolume)), 'Объём', pal.card],
+        ].map(([v, l, bg], i) => (
+          <div key={i} style={{ flex: 1, background: bg, borderRadius: 14, padding: '10px 0', textAlign: 'center', border: `1px solid ${pal.line}` }}>
+            <div style={{ fontSize: 16, fontWeight: 900, color: pal.ink, letterSpacing: -0.3, fontVariantNumeric: 'tabular-nums' }}>{v}</div>
+            <div style={{ fontSize: 9, color: pal.mute, fontWeight: 800, textTransform: 'uppercase' }}>{l}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* What you did */}
+      <div style={{ padding: '24px 20px 0' }}>
+        <div style={{ fontSize: 11, color: pal.mute, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5, marginBottom: 8 }}>
+          Что сделано
+        </div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {day.exercises.map((pe) => {
+            const ex = library[pe.exerciseId];
+            const exSets = sets.filter((s) => s.exerciseId === pe.exerciseId).sort((a, b) => a.setIndex - b.setIndex);
+            if (!ex) return null;
+            return (
+              <div key={pe.exerciseId} style={{ background: pal.card, borderRadius: 14, padding: '10px 12px', border: `1px solid ${pal.line}` }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: exSets.length ? 6 : 0 }}>
+                  <MuscleDot primary={ex.primaryMuscles} secondary={ex.secondaryMuscles} size={22} />
+                  <div style={{ flex: 1, fontSize: 13, fontWeight: 800, minWidth: 0, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{ex.name}</div>
+                  <div style={{ fontSize: 10, color: exSets.length === pe.sets ? pal.terra : pal.mute, fontWeight: 800 }}>
+                    {exSets.length}/{pe.sets}
                   </div>
-                  <h2 class="font-bold text-white truncate">
-                    {ex?.name ?? pe.exerciseId}
-                  </h2>
-                  <div class="text-zinc-600 text-xs shrink-0">ⓘ</div>
                 </div>
-                <div
-                  class={`text-xs tabular-nums shrink-0 ml-2 font-mono ${
-                    exSets.length === pe.sets ? 'text-emerald-400' : 'text-zinc-500'
-                  }`}
-                >
-                  {exSets.length}/{pe.sets}
-                </div>
-              </Link>
-              <div class="text-xs text-zinc-500 mt-1 mb-2 px-1">
-                цель: {pe.sets} × {formatRange(pe.repsMin, pe.repsMax)} · RIR{' '}
-                {formatRange(pe.rirMin, pe.rirMax)}
+                {exSets.length > 0 && (
+                  <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap' }}>
+                    {exSets.map((s) => (
+                      <span key={s.id} style={{ fontSize: 10.5, fontWeight: 800, color: pal.ink2, background: pal.bgSoft, padding: '3px 8px', borderRadius: 8, fontFamily: 'ui-monospace,monospace' }}>
+                        {s.weight > 0 ? `${s.weight}кг×${s.reps}` : `×${s.reps}`}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
-
-              {exSets.length === 0 ? (
-                <div class="px-3 py-2 text-xs text-zinc-600 italic">
-                  — не выполнено —
-                </div>
-              ) : (
-                <div class="space-y-1.5">
-                  {exSets.map((s) => {
-                    const inRepRange =
-                      s.reps >= pe.repsMin && s.reps <= pe.repsMax;
-                    const inRirRange = s.rir >= pe.rirMin && s.rir <= pe.rirMax;
-                    return (
-                      <div
-                        key={s.id}
-                        class="flex items-center gap-3 p-3 bg-zinc-900/40 rounded-xl border border-zinc-900"
-                      >
-                        <div class="text-emerald-500 text-sm">✓</div>
-                        <div class="text-zinc-500 text-sm tabular-nums w-4">
-                          {s.setIndex + 1}
-                        </div>
-                        <div class="font-mono tabular-nums text-white">
-                          {formatWeight(s.weight)}
-                          <span class="text-zinc-500 text-xs">кг</span>
-                          {' × '}
-                          <span class={inRepRange ? '' : 'text-amber-400'}>
-                            {s.reps}
-                          </span>
-                          <span class="text-zinc-500"> · R</span>
-                          <span class={inRirRange ? '' : 'text-amber-400'}>
-                            {s.rir}
-                          </span>
-                        </div>
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </section>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
     </div>
   );
+}
+
+function iconBtn(): import('preact').JSX.CSSProperties {
+  return {
+    width: 36,
+    height: 36,
+    borderRadius: 12,
+    background: pal.card,
+    border: `1px solid ${pal.line}`,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    color: pal.ink,
+    textDecoration: 'none',
+  };
 }

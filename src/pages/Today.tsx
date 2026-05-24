@@ -1,128 +1,350 @@
 import { useEffect, useState } from 'preact/hooks';
 import { loadProgram } from '../lib/loadData';
-import { Link } from '../lib/hashRouter';
-import { ActiveSessionBanner } from '../components/ActiveSessionBanner';
+import { useLive } from '../lib/useLive';
+import { db } from '../db/schema';
+import { startSession } from '../db/queries';
+import { navigate } from '../lib/hashRouter';
+import { pal, formatDayDate, dayCode, DOW_RU_SHORT } from '../lib/designTokens';
+import { BottomNav } from '../components/BottomNav';
 import { IOSInstallBanner } from '../components/IOSInstallBanner';
-import type { Program } from '../types';
-
-const DOW_SHORT = ['Вс', 'Пн', 'Вт', 'Ср', 'Чт', 'Пт', 'Сб'];
-const CYR_LETTER: Record<string, string> = { A: 'А', B: 'Б', C: 'В', D: 'Г' };
-const displayLetter = (id: string) => CYR_LETTER[id] || id;
+import { getWeekStats, getCompletedDayIndicesThisWeek, formatVolume, type WeekStats } from '../lib/stats';
+import type { Program, Day } from '../types';
 
 export function Today() {
   const [program, setProgram] = useState<Program | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [stats, setStats] = useState<WeekStats | null>(null);
+  const [doneIdx, setDoneIdx] = useState<number[]>([]);
 
   useEffect(() => {
-    loadProgram().then(setProgram).catch((e) => setError(String(e)));
+    loadProgram().then(setProgram);
+    getWeekStats().then(setStats);
+    getCompletedDayIndicesThisWeek().then(setDoneIdx);
   }, []);
 
-  if (error) return <div class="p-4 text-rose-400">{error}</div>;
-  if (!program) return <div class="p-4 text-zinc-500">Загрузка...</div>;
+  const activeSession = useLive(async () => {
+    const sessions = await db.sessions.where('completedAt').equals(0).toArray();
+    sessions.sort((a, b) => b.startedAt - a.startedAt);
+    return sessions[0];
+  });
+
+  if (!program) {
+    return <div style={{ padding: 20, color: pal.mute }}>Загрузка...</div>;
+  }
 
   const now = new Date();
-  const todayDow = now.getDay();
+  const todayDow = now.getDay(); // 0=Sun..6=Sat
   const todayDay = program.days.find((d) => d.dayOfWeek === todayDow);
+  const trainingDows = program.days.map((d) => d.dayOfWeek); // [1,3,5]
+  const trainingIdx = trainingDows.map((d) => ((d || 7) - 1)); // convert to Mon=0..Sun=6
 
-  const nextDay = todayDay
-    ? undefined
-    : (() => {
-        for (let offset = 1; offset <= 7; offset++) {
-          const dow = (todayDow + offset) % 7;
-          const match = program.days.find((d) => d.dayOfWeek === dow);
-          if (match) return { day: match, daysAway: offset };
-        }
-        return undefined;
-      })();
+  // Compute today index in Mon-first week
+  const todayMonIdx = ((todayDow || 7) - 1);
+
+  // Compute next training day for "Up next" card
+  let nextDay: Day | undefined;
+  let nextDaysAway = 0;
+  if (!todayDay) {
+    for (let offset = 1; offset <= 7; offset++) {
+      const dow = (todayDow + offset) % 7;
+      const match = program.days.find((d) => d.dayOfWeek === dow);
+      if (match) {
+        nextDay = match;
+        nextDaysAway = offset;
+        break;
+      }
+    }
+  } else {
+    // also show next training day after today
+    for (let offset = 1; offset <= 7; offset++) {
+      const dow = (todayDow + offset) % 7;
+      const match = program.days.find((d) => d.dayOfWeek === dow);
+      if (match) {
+        nextDay = match;
+        nextDaysAway = offset;
+        break;
+      }
+    }
+  }
+
+  // Week strip — render Mon..Sun
+  const startDate = new Date(now);
+  startDate.setDate(now.getDate() - todayMonIdx);
+
+  const startTodaysWorkout = async () => {
+    if (activeSession?.id) {
+      navigate(`/session/${activeSession.id}`);
+      return;
+    }
+    if (!todayDay) return;
+    const id = await startSession(todayDay.id);
+    navigate(`/session/${id}`);
+  };
 
   return (
-    <div class="min-h-screen bg-black text-white">
-      <header class="px-5 pt-8 pb-3">
-        <div class="flex items-baseline justify-between gap-3">
-          <h1 class="text-2xl font-bold tracking-tight truncate">{program.name}</h1>
-          <div class="flex gap-4 text-sm shrink-0">
-            <Link href="/history" class="text-zinc-400 active:text-white">История</Link>
-            <Link href="/settings" class="text-zinc-400 active:text-white">⚙</Link>
-          </div>
-        </div>
-        <div class="text-sm text-zinc-500 mt-1">
-          {DOW_SHORT[todayDow]}, {now.toLocaleDateString('ru-RU', { day: 'numeric', month: 'long' })}
-        </div>
-      </header>
-
+    <div style={{ minHeight: '100vh', background: pal.bg, paddingBottom: 110, maxWidth: 480, margin: '0 auto' }}>
       <IOSInstallBanner />
-      <ActiveSessionBanner />
 
-      <div class="px-4 mt-2">
+      {/* Greeting */}
+      <div style={{ padding: '34px 20px 0', display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: 12 }}>
+        <div style={{ minWidth: 0 }}>
+          <div style={{ fontSize: 12, color: pal.mute, fontWeight: 600, textTransform: 'capitalize' }}>
+            {formatDayDate(now)}
+          </div>
+          <div style={{ fontSize: 22, fontWeight: 800, marginTop: 2, color: pal.ink }}>Привет</div>
+        </div>
+        <div
+          style={{
+            width: 38,
+            height: 38,
+            borderRadius: 19,
+            background: `linear-gradient(135deg,${pal.peachL},${pal.peach})`,
+            flexShrink: 0,
+          }}
+        />
+      </div>
+
+      {/* Active session banner (if any) */}
+      {activeSession?.id && (
+        <a
+          href={`#/session/${activeSession.id}`}
+          style={{
+            display: 'block',
+            margin: '16px 20px 0',
+            padding: 12,
+            background: pal.peachL,
+            border: `1px solid ${pal.peach}`,
+            borderRadius: 16,
+            textDecoration: 'none',
+            color: pal.ink,
+          }}
+        >
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <div>
+              <div style={{ fontSize: 10, color: pal.terraD, letterSpacing: 1, textTransform: 'uppercase', fontWeight: 800 }}>
+                Тренировка в процессе
+              </div>
+              <div style={{ fontSize: 14, fontWeight: 800, marginTop: 2 }}>
+                Продолжить →
+              </div>
+            </div>
+            <div style={{ fontSize: 11, color: pal.terraD, fontWeight: 700 }}>
+              {Math.floor((Date.now() - activeSession.startedAt) / 60000)} мин
+            </div>
+          </div>
+        </a>
+      )}
+
+      {/* Week strip */}
+      <div style={{ padding: '20px 20px 0', display: 'flex', justifyContent: 'space-between' }}>
+        {DOW_RU_SHORT.slice(1).concat([DOW_RU_SHORT[0]]).map((dLabel, i) => {
+          // i is 0..6 Mon..Sun
+          const isToday = i === todayMonIdx;
+          const isTraining = trainingIdx.includes(i);
+          const isDone = doneIdx.includes(i);
+          const dateNum = new Date(startDate.getFullYear(), startDate.getMonth(), startDate.getDate() + i).getDate();
+          return (
+            <div key={i} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6, width: 36 }}>
+              <span style={{ fontSize: 11, color: pal.mute, fontWeight: 700 }}>{dLabel}</span>
+              <div
+                style={{
+                  width: 34,
+                  height: 34,
+                  borderRadius: 17,
+                  background: isToday ? pal.ink : (isDone ? pal.peachL : pal.bgSoft),
+                  color: isToday ? pal.peachL : pal.ink,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: 13,
+                  fontWeight: 800,
+                  position: 'relative',
+                  border: isTraining && !isToday && !isDone ? `1.5px dashed ${pal.muteSoft}` : 'none',
+                }}
+              >
+                {dateNum}
+                {isDone && (
+                  <div style={{
+                    position: 'absolute',
+                    bottom: -2,
+                    right: -2,
+                    width: 13,
+                    height: 13,
+                    borderRadius: 7,
+                    background: pal.terra,
+                    border: `2px solid ${pal.bg}`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}>
+                    <svg width="6" height="5" viewBox="0 0 6 5">
+                      <path d="M1 2.5L2.5 4l3-3.5" stroke="#fff" strokeWidth="1.4" fill="none" strokeLinecap="round"/>
+                    </svg>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Hero — today */}
+      <div style={{ padding: '20px 20px 0' }}>
         {todayDay ? (
-          <Link
-            href={`/day/${todayDay.id}`}
-            class="block p-5 bg-emerald-950/40 rounded-2xl border border-emerald-900/60 active:bg-emerald-900/40 transition-colors"
+          <div
+            style={{
+              position: 'relative',
+              borderRadius: 28,
+              background: `linear-gradient(150deg,${pal.peachL},${pal.peach} 65%,${pal.peachD})`,
+              padding: 20,
+              overflow: 'hidden',
+              boxShadow: '0 14px 30px rgba(200,120,80,0.20)',
+              minHeight: 200,
+            }}
           >
-            <div class="text-[11px] uppercase tracking-[0.15em] text-emerald-400 font-semibold">
-              Сегодня
+            <div style={{ fontSize: 11, color: pal.terraD, letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 800 }}>
+              Сегодняшняя тренировка
             </div>
-            <div class="text-2xl font-bold mt-2">
-              День {displayLetter(todayDay.id)}
+            <div style={{ fontSize: 30, fontWeight: 900, letterSpacing: -1, color: pal.ink, marginTop: 6 }}>
+              Full Body {dayCode(todayDay.id)}.
             </div>
-            <div class="text-lg text-zinc-300 mt-0.5">{todayDay.name}</div>
-            <div class="text-sm text-zinc-500 mt-3">
-              {todayDay.exercises.length} упражнений ·{' '}
-              {todayDay.exercises.reduce((s, e) => s + e.sets, 0)} рабочих сетов
+            <div style={{ fontSize: 13, fontWeight: 700, color: pal.ink2, marginTop: 2 }}>
+              {todayDay.exercises.length} упражнений · ~45 мин
             </div>
-          </Link>
+
+            {/* progress ring (sessions this week / 3) */}
+            <svg viewBox="0 0 100 100" width="150" height="150" style={{ position: 'absolute', right: -8, top: -8 }}>
+              <circle cx="50" cy="50" r="40" fill="none" stroke="rgba(42,36,33,0.16)" strokeWidth="9" />
+              <circle
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+                stroke={pal.ink}
+                strokeWidth="9"
+                strokeDasharray="251"
+                strokeDashoffset={251 - 251 * (stats ? Math.min(1, stats.sessionsThisWeek / 3) : 0)}
+                strokeLinecap="round"
+                transform="rotate(-90 50 50)"
+              />
+              <text x="50" y="49" textAnchor="middle" fill={pal.ink} fontSize="15" fontWeight="900">
+                {stats?.sessionsThisWeek ?? 0}/3
+              </text>
+              <text x="50" y="62" textAnchor="middle" fill={pal.ink2} fontSize="6" opacity=".75" fontWeight="800">
+                ЭТА НЕДЕЛЯ
+              </text>
+            </svg>
+
+            <button
+              type="button"
+              onClick={startTodaysWorkout}
+              style={{
+                position: 'absolute',
+                left: 20,
+                bottom: 20,
+                padding: '12px 22px',
+                background: pal.ink,
+                color: pal.peachL,
+                border: 'none',
+                borderRadius: 100,
+                fontWeight: 800,
+                fontSize: 13,
+                fontFamily: 'inherit',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 6,
+                cursor: 'pointer',
+              }}
+            >
+              {activeSession?.id ? 'Продолжить' : 'Начать тренировку'}
+              <svg width="11" height="11" viewBox="0 0 11 11">
+                <path d="M1 5.5h9M6 1l4.5 4.5L6 10" stroke={pal.peachL} strokeWidth="1.8" fill="none" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </button>
+          </div>
         ) : (
-          <div class="p-5 bg-zinc-900/60 rounded-2xl border border-zinc-800">
-            <div class="text-[11px] uppercase tracking-[0.15em] text-zinc-500 font-semibold">
+          <div
+            style={{
+              borderRadius: 28,
+              background: pal.card,
+              padding: 20,
+              border: `1px solid ${pal.line}`,
+              minHeight: 120,
+            }}
+          >
+            <div style={{ fontSize: 11, color: pal.mute, letterSpacing: 1.5, textTransform: 'uppercase', fontWeight: 800 }}>
               Сегодня
             </div>
-            <div class="text-2xl font-bold mt-2 text-zinc-300">День отдыха</div>
+            <div style={{ fontSize: 26, fontWeight: 900, letterSpacing: -1, color: pal.ink, marginTop: 6 }}>
+              День отдыха
+            </div>
             {nextDay && (
-              <div class="text-sm text-zinc-500 mt-3">
-                Следующая тренировка — {DOW_SHORT[nextDay.day.dayOfWeek]} (через{' '}
-                {nextDay.daysAway} {nextDay.daysAway === 1 ? 'день' : 'дн'})
+              <div style={{ fontSize: 12, color: pal.mute, fontWeight: 700, marginTop: 8 }}>
+                Следующая тренировка — {DOW_RU_SHORT[nextDay.dayOfWeek]} (через {nextDaysAway} {nextDaysAway === 1 ? 'день' : 'дн'})
               </div>
             )}
           </div>
         )}
       </div>
 
-      <section class="mt-10 pb-8">
-        <div class="px-5 text-[11px] uppercase tracking-[0.15em] text-zinc-600 font-semibold mb-3">
-          Все дни программы
+      {/* Stats row */}
+      <div style={{ padding: '14px 20px 0', display: 'flex', gap: 8 }}>
+        {[
+          [stats ? formatVolume(stats.totalVolumeKg) : '—', 'Поднято', 'эта неделя'],
+          [stats ? String(stats.totalSets) : '—', 'Сетов', 'сделано'],
+          [stats ? `${stats.streakWeeks}нд` : '—', 'Серия', 'недель'],
+        ].map(([v, l, s], i) => (
+          <div key={i} style={{ flex: 1, background: pal.card, borderRadius: 18, padding: '12px 12px', border: `1px solid ${pal.line}` }}>
+            <div style={{ fontSize: 20, fontWeight: 900, letterSpacing: -0.5, color: pal.ink, fontVariantNumeric: 'tabular-nums' }}>{v}</div>
+            <div style={{ fontSize: 11, color: pal.mute, fontWeight: 700, marginTop: 2 }}>{l}</div>
+            <div style={{ fontSize: 10, color: pal.muteSoft, fontWeight: 600 }}>{s}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Up next */}
+      {nextDay && (
+        <div style={{ padding: '20px 20px 0' }}>
+          <div style={{ fontSize: 12, color: pal.mute, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 8 }}>
+            Дальше
+          </div>
+          <a
+            href={`#/day/${nextDay.id}`}
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              background: pal.card,
+              borderRadius: 18,
+              padding: '12px 14px',
+              border: `1px solid ${pal.line}`,
+              textDecoration: 'none',
+              color: pal.ink,
+            }}
+          >
+            <div style={{
+              width: 38,
+              height: 38,
+              borderRadius: 12,
+              background: pal.lavender,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontWeight: 900,
+              color: pal.ink,
+            }}>
+              {dayCode(nextDay.id)}
+            </div>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <div style={{ fontSize: 14, fontWeight: 800 }}>Full Body {dayCode(nextDay.id)}</div>
+              <div style={{ fontSize: 11, color: pal.mute, fontWeight: 600 }}>
+                {DOW_RU_SHORT[nextDay.dayOfWeek]} · {nextDay.exercises.length} упражнений
+              </div>
+            </div>
+          </a>
         </div>
-        <div class="px-4 space-y-2">
-          {program.days.map((d) => {
-            const isToday = d.dayOfWeek === todayDow;
-            return (
-              <Link
-                key={d.id}
-                href={`/day/${d.id}`}
-                class={`block p-4 rounded-xl border active:bg-zinc-800/80 transition-colors ${
-                  isToday
-                    ? 'bg-zinc-900 border-emerald-900/40'
-                    : 'bg-zinc-900/60 border-zinc-800'
-                }`}
-              >
-                <div class="flex items-baseline justify-between gap-3">
-                  <div class="flex items-baseline gap-3 min-w-0">
-                    <div class="text-2xl font-bold text-zinc-400 tabular-nums">
-                      {displayLetter(d.id)}
-                    </div>
-                    <div class="font-semibold text-white truncate">{d.name}</div>
-                  </div>
-                  <div class="text-xs text-zinc-500 tabular-nums">
-                    {DOW_SHORT[d.dayOfWeek]}
-                  </div>
-                </div>
-                <div class="text-xs text-zinc-500 mt-1.5 ml-9">
-                  {d.exercises.length} упр · {d.exercises.reduce((s, e) => s + e.sets, 0)} сетов
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </section>
+      )}
+
+      <BottomNav active="home" />
     </div>
   );
 }

@@ -1,3 +1,4 @@
+import { pal } from '../lib/designTokens';
 import { formatNum } from '../lib/format';
 
 interface StepperProps {
@@ -22,26 +23,85 @@ export function Stepper({
   const inc = () => onChange(round(Math.min(max, value + step)));
 
   return (
-    <div class="flex items-stretch h-14 flex-1 select-none">
+    <div
+      style={{
+        flex: 1,
+        background: pal.bgSoft,
+        borderRadius: 14,
+        padding: '8px 10px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        gap: 8,
+        userSelect: 'none',
+      }}
+    >
       <button
         type="button"
         onClick={dec}
-        class="w-16 bg-zinc-800 active:bg-zinc-700 rounded-l-xl text-3xl font-light text-zinc-200"
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 10,
+          border: 'none',
+          background: pal.card,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+        }}
         aria-label="меньше"
       >
-        −
+        <svg width="14" height="2" viewBox="0 0 14 2">
+          <path d="M1 1h12" stroke={pal.ink} strokeWidth="2" strokeLinecap="round" />
+        </svg>
       </button>
-      <div class="flex-1 bg-zinc-800 flex items-baseline justify-center gap-1.5 mx-px">
-        <span class="text-2xl font-bold tabular-nums">{formatNum(value)}</span>
-        {unit && <span class="text-xs text-zinc-500">{unit}</span>}
+      <div style={{ textAlign: 'center', flex: 1 }}>
+        <div
+          style={{
+            fontSize: 22,
+            fontWeight: 900,
+            lineHeight: 1,
+            color: pal.ink,
+            fontVariantNumeric: 'tabular-nums',
+          }}
+        >
+          {formatNum(value)}
+        </div>
+        {unit && (
+          <div
+            style={{
+              fontSize: 9,
+              color: pal.mute,
+              fontWeight: 800,
+              textTransform: 'uppercase',
+              letterSpacing: 0.5,
+              marginTop: 2,
+            }}
+          >
+            {unit}
+          </div>
+        )}
       </div>
       <button
         type="button"
         onClick={inc}
-        class="w-16 bg-zinc-800 active:bg-zinc-700 rounded-r-xl text-3xl font-light text-zinc-200"
+        style={{
+          width: 30,
+          height: 30,
+          borderRadius: 10,
+          border: 'none',
+          background: pal.card,
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          cursor: 'pointer',
+        }}
         aria-label="больше"
       >
-        +
+        <svg width="14" height="14" viewBox="0 0 14 14">
+          <path d="M7 1v12M1 7h12" stroke={pal.ink} strokeWidth="2" strokeLinecap="round" />
+        </svg>
       </button>
     </div>
   );
