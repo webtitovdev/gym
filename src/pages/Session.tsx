@@ -156,7 +156,13 @@ export function Session({ sessionId, exerciseIdx = 0 }: Props) {
 
       {/* Animated illustration */}
       <div style={{ padding: '20px 20px 0' }}>
-        <ExerciseGif exerciseId={ex.id} height={150} />
+        <ExerciseGif
+          imageUrl={ex.imageUrl}
+          imageUrlEnd={ex.imageUrlEnd}
+          exerciseId={ex.id}
+          altText={ex.name}
+          height={200}
+        />
       </div>
 
       {/* Title + small muscle map */}

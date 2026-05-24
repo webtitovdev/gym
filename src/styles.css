@@ -28,9 +28,9 @@ button, a {
   font-variant-numeric: tabular-nums;
 }
 
-/* Exercise GIF — 2-frame crossfade */
-@keyframes ex-toggle { 0%, 48% { opacity: 1 } 50%, 100% { opacity: 0 } }
+/* Exercise GIF — 2-frame crossfade (smoothed for photos) */
+@keyframes ex-toggle { 0%, 42% { opacity: 1 } 58%, 100% { opacity: 0 } }
 @keyframes ex-pulse  { 0%, 100% { opacity: .4 } 50% { opacity: 1 } }
-.ex-frame-a { animation: ex-toggle 1.6s linear infinite; }
-.ex-frame-b { animation: ex-toggle 1.6s linear infinite; animation-direction: reverse; }
-.ex-pulse-dot { animation: ex-pulse 1.6s ease-in-out infinite; }
+.ex-frame-a { animation: ex-toggle 1.8s ease-in-out infinite; }
+.ex-frame-b { animation: ex-toggle 1.8s ease-in-out infinite; animation-direction: reverse; }
+.ex-pulse-dot { animation: ex-pulse 1.8s ease-in-out infinite; }

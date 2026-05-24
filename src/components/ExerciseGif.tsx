@@ -1,7 +1,9 @@
-// 2-frame animated exercise illustrations — ported from design handoff
-// (workout/project/flow-illustrations.jsx).
+// Exercise illustration:
+// - Primary: real photos (start + end position) crossfading via CSS
+// - Fallback: stylized 2-frame SVG when no photo URLs provided
+// Ported from design handoff: workout/project/flow-illustrations.jsx
 
-import { tints } from '../lib/designTokens';
+import { pal, tints } from '../lib/designTokens';
 import { illusFor, type IllustrationKind, type TintName } from '../lib/illustrations';
 import type { JSX } from 'preact';
 
@@ -37,7 +39,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   press_seated: (f) => (
     <g>
       <rect x="80" y="92" width="48" height="10" rx="3" fill={EQP} />
@@ -64,7 +65,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   pulldown: (f) => (
     <g>
       <line x1="100" y1="2" x2="100" y2={f === 0 ? 30 : 50} stroke={EQP} strokeWidth="1.5" />
@@ -90,7 +90,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   row_cable: (f) => (
     <g>
       <rect x="0" y="124" width="200" height="10" fill={EQP} opacity=".55" />
@@ -114,7 +113,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   row_db_oneArm: (f) => (
     <g>
       <rect x="20" y="100" width="100" height="10" rx="3" fill={EQP} />
@@ -138,7 +136,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   pec_deck: (f) => (
     <g>
       <rect x="86" y="100" width="36" height="10" rx="3" fill={EQP} />
@@ -165,7 +162,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   reverse_fly: (f) => (
     <g>
       <rect x="86" y="100" width="36" height="10" rx="3" fill={EQP} />
@@ -189,7 +185,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   curl: (f) => (
     <g>
       <circle cx="104" cy="32" r="10" fill={FIG} />
@@ -215,7 +210,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   pushdown: (f) => (
     <g>
       <line x1="104" y1="2" x2="104" y2={f === 0 ? 56 : 72} stroke={EQP} strokeWidth="1.5" />
@@ -242,7 +236,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   triceps_overhead: (f) => (
     <g>
       <rect x="0" y="120" width="14" height="14" rx="2" fill={EQP} />
@@ -267,7 +260,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   lateral: (f) => (
     <g>
       <circle cx="104" cy="32" r="10" fill={FIG} />
@@ -291,7 +283,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   leg_curl: (f) => (
     <g>
       <rect x="14" y="80" width="170" height="14" rx="6" fill={EQP} />
@@ -313,7 +304,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   glute_bridge: (f) => (
     <g>
       <rect x="0" y="128" width="200" height="6" fill={EQP} opacity=".4" />
@@ -341,7 +331,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   calf_raise: (f) => (
     <g>
       <rect x="20" y="98" width="160" height="14" rx="3" fill={EQP} />
@@ -362,7 +351,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   hang: (f) => (
     <g>
       <rect x="34" y="6" width="132" height="6" rx="2" fill={EQP} />
@@ -383,7 +371,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       )}
     </g>
   ),
-
   shrug: (f) => (
     <g>
       <circle cx="104" cy="30" r="10" fill={FIG} />
@@ -392,7 +379,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
       <rect x="106" y="88" width="10" height="40" rx="4" fill={FIG} />
       {f === 0 ? (
         <g>
-          {/* shoulders down */}
           <rect x="82" y="50" width="9" height="50" rx="4" fill={FIG} />
           <rect x="117" y="50" width="9" height="50" rx="4" fill={FIG} />
           <rect x="74" y="98" width="24" height="9" rx="2" fill={EQP} />
@@ -400,7 +386,6 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
         </g>
       ) : (
         <g>
-          {/* shoulders up - shrug */}
           <rect x="82" y="42" width="9" height="50" rx="4" fill={FIG} />
           <rect x="117" y="42" width="9" height="50" rx="4" fill={FIG} />
           <rect x="74" y="90" width="24" height="9" rx="2" fill={EQP} />
@@ -412,84 +397,120 @@ const ILLUS: Record<IllustrationKind, FrameFn> = {
 };
 
 interface Props {
-  exerciseId: string;
+  /** If imageUrl is set, photo crossfade renders (preferred). */
+  imageUrl?: string;
+  imageUrlEnd?: string;
+  /** Used for SVG fallback when no photo URLs provided. */
+  exerciseId?: string;
   height?: number;
   rounded?: number;
+  altText?: string;
 }
 
-export function ExerciseGif({ exerciseId, height = 150, rounded = 22 }: Props) {
-  const { kind, tint } = illusFor(exerciseId);
-  const [a, b] = tints[tint as TintName] || tints.peach;
-  const Frame = ILLUS[kind];
-
-  return (
-    <div
-      style={{
-        height,
-        borderRadius: rounded,
-        background: `linear-gradient(150deg,${a},${b})`,
-        position: 'relative',
-        overflow: 'hidden',
-      }}
-    >
-      {/* decorative circles */}
+export function ExerciseGif({
+  imageUrl,
+  imageUrlEnd,
+  exerciseId,
+  height = 180,
+  rounded = 22,
+  altText = '',
+}: Props) {
+  // Photo mode — preferred
+  if (imageUrl) {
+    return (
       <div
         style={{
-          position: 'absolute',
-          left: -16,
-          top: -16,
-          width: 90,
-          height: 90,
-          borderRadius: '50%',
-          background: 'rgba(255,255,255,0.32)',
-        }}
-      />
-      <div
-        style={{
-          position: 'absolute',
-          right: -22,
-          bottom: -22,
-          width: 110,
-          height: 110,
-          borderRadius: '50%',
-          background: 'rgba(255,255,255,0.18)',
-        }}
-      />
-      <svg
-        viewBox="0 0 200 140"
-        width="100%"
-        height="100%"
-        style={{ position: 'absolute', inset: 0 }}
-        preserveAspectRatio="xMidYMid meet"
-      >
-        <g class="ex-frame-a">{Frame(0)}</g>
-        <g class="ex-frame-b">{Frame(1)}</g>
-      </svg>
-      {/* GIF badge */}
-      <div
-        style={{
-          position: 'absolute',
-          right: 10,
-          top: 10,
-          display: 'flex',
-          alignItems: 'center',
-          gap: 5,
-          fontFamily: 'ui-monospace,monospace',
-          fontSize: 9,
-          color: 'rgba(42,36,33,0.6)',
-          fontWeight: 700,
-          letterSpacing: 0.5,
-          background: 'rgba(255,255,255,0.55)',
-          padding: '3px 7px',
-          borderRadius: 100,
+          height,
+          borderRadius: rounded,
+          background: pal.bgSoft,
+          position: 'relative',
+          overflow: 'hidden',
         }}
       >
-        <span
-          class="ex-pulse-dot"
-          style={{ width: 5, height: 5, borderRadius: 3, background: '#D9876F' }}
+        <img
+          src={imageUrl}
+          alt={altText}
+          loading="lazy"
+          class={imageUrlEnd ? 'ex-frame-a' : undefined}
+          style={{
+            position: 'absolute',
+            inset: 0,
+            width: '100%',
+            height: '100%',
+            objectFit: 'contain',
+          }}
         />
-        GIF
+        {imageUrlEnd && (
+          <img
+            src={imageUrlEnd}
+            alt={altText}
+            loading="lazy"
+            class="ex-frame-b"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'contain',
+            }}
+          />
+        )}
+        <GifBadge />
       </div>
+    );
+  }
+
+  // SVG fallback (no photo available)
+  if (exerciseId) {
+    const { kind, tint } = illusFor(exerciseId);
+    const [a, b] = tints[tint as TintName] || tints.peach;
+    const Frame = ILLUS[kind];
+    return (
+      <div
+        style={{
+          height,
+          borderRadius: rounded,
+          background: `linear-gradient(150deg,${a},${b})`,
+          position: 'relative',
+          overflow: 'hidden',
+        }}
+      >
+        <div style={{ position: 'absolute', left: -16, top: -16, width: 90, height: 90, borderRadius: '50%', background: 'rgba(255,255,255,0.32)' }} />
+        <div style={{ position: 'absolute', right: -22, bottom: -22, width: 110, height: 110, borderRadius: '50%', background: 'rgba(255,255,255,0.18)' }} />
+        <svg viewBox="0 0 200 140" width="100%" height="100%" style={{ position: 'absolute', inset: 0 }} preserveAspectRatio="xMidYMid meet">
+          <g class="ex-frame-a">{Frame(0)}</g>
+          <g class="ex-frame-b">{Frame(1)}</g>
+        </svg>
+        <GifBadge />
+      </div>
+    );
+  }
+
+  // Nothing to show
+  return null;
+}
+
+function GifBadge() {
+  return (
+    <div style={{
+      position: 'absolute',
+      right: 10,
+      top: 10,
+      display: 'flex',
+      alignItems: 'center',
+      gap: 5,
+      fontFamily: 'ui-monospace,monospace',
+      fontSize: 9,
+      color: 'rgba(42,36,33,0.7)',
+      fontWeight: 700,
+      letterSpacing: 0.5,
+      background: 'rgba(255,255,255,0.7)',
+      padding: '3px 7px',
+      borderRadius: 100,
+      backdropFilter: 'blur(4px)',
+    }}>
+      <span class="ex-pulse-dot" style={{ width: 5, height: 5, borderRadius: 3, background: '#D9876F' }} />
+      GIF
     </div>
   );
 }

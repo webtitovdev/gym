@@ -42,7 +42,13 @@ export function ExerciseView({ exerciseId }: { exerciseId: string }) {
 
       {/* Animated illustration */}
       <div style={{ padding: '20px 20px 0' }}>
-        <ExerciseGif exerciseId={ex.id} height={160} />
+        <ExerciseGif
+          imageUrl={ex.imageUrl}
+          imageUrlEnd={ex.imageUrlEnd}
+          exerciseId={ex.id}
+          altText={ex.name}
+          height={240}
+        />
       </div>
 
       {/* Title + tags */}
