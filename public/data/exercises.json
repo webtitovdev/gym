@@ -572,6 +572,33 @@
       "Поднятие плеч к ушам — превращается в шраг, средняя дельта разгружена"
     ]
   },
+  "incline-db-curl": {
+    "id": "incline-db-curl",
+    "name": "Бицепс на наклонной 30°",
+    "equipment": "dumbbell",
+    "weightIncrement": 2,
+    "unilateral": false,
+    "primaryMuscles": ["biceps"],
+    "secondaryMuscles": ["forearms"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Curl/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Incline_Dumbbell_Curl/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=incline+dumbbell+curl+technique",
+    "cues": [
+      "Скамья на 30°, спина прижата, лопатки сведены, плечи отведены назад",
+      "Руки висят вертикально вниз — это даёт максимальную растяжку длинной головки бицепса",
+      "Локти зафиксированы рядом с корпусом, движение только в локтевом суставе",
+      "Поднимай до уровня груди, в верхней точке короткая пауза, лёгкая супинация",
+      "Опускай медленно 2-3 сек до полного разгибания — не теряй контроль внизу"
+    ],
+    "mistakes": [
+      "Локти ползут вперёд при подъёме — нагрузка уходит с длинной головки на плечо",
+      "Неполное разгибание внизу — упускается растяжка (главное преимущество incline curl)",
+      "Отрыв плеч от спинки — превращается в обычный curl, теряется фишка наклона",
+      "Чрезмерная супинация в верхней точке — лёгкий доворот ок, но рывковая ротация лишняя",
+      "Скамья слишком пологая (45°+) — растяжка не максимальная, специфика теряется"
+    ]
+  },
   "hanging-leg-raise": {
     "id": "hanging-leg-raise",
     "name": "Подъём ног в висе",
