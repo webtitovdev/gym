@@ -545,30 +545,31 @@
       "Слишком большой вес — невозможно округлить спину, движение становится тягой"
     ]
   },
-  "cable-rear-delt-row": {
-    "id": "cable-rear-delt-row",
-    "name": "Cable Rear Delt Row",
-    "equipment": "cable",
-    "weightIncrement": 2.5,
+  "db-lateral-raise": {
+    "id": "db-lateral-raise",
+    "name": "Махи гантелями стоя",
+    "equipment": "dumbbell",
+    "weightIncrement": 2,
     "unilateral": false,
-    "primaryMuscles": ["rear_delts"],
-    "secondaryMuscles": ["mid_back", "traps"],
+    "primaryMuscles": ["side_delts"],
+    "secondaryMuscles": [],
     "exerciseDbId": null,
-    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/0.jpg",
-    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Face_Pull/1.jpg",
-    "youtubeUrl": "https://www.youtube.com/results?search_query=cable+rear+delt+row+jeff+nippard",
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Side_Lateral_Raise/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=dumbbell+lateral+raise+technique",
     "cues": [
-      "⚠️ Картинка похожа на face pull (тот же setup) — но локти держи строго на уровне плеч, концы каната мимо ушей в стороны",
-      "Канат на верхнем блоке (выше уровня плеч), хват сверху ладонями вниз",
-      "Встань близко к блоку, отклонись назад на 15-20°, корпус жёсткий и неподвижен",
-      "Тяни локтями строго назад-в-стороны параллельно полу",
-      "Сжимай задние дельты в верхней точке 1 сек, опускай контролируемо"
+      "Гантели по бокам, лёгкий наклон корпуса вперёд 5-10°, локти чуть согнуты",
+      "Поднимай через стороны до уровня плеч — не выше, иначе подключается трапеция",
+      "Веди мизинцем вверх, как будто выливаешь воду из кружки",
+      "В верхней точке локти ВЫШЕ кистей, плечо двигается в плоскости лопатки",
+      "Опускай контролируемо 2-3 сек, не давай гантелям падать"
     ],
     "mistakes": [
-      "Тяга к лицу с локтями вверх и вперёд — превращается в face pull, акцент на задние дельты теряется",
-      "Локти опущены вниз — становится обычной горизонтальной тягой, ромбы перебирают работу",
-      "Раскачивание корпусом — инерция вместо изоляции задних дельт",
-      "Сведение лопаток силой в начале — работают трапеции и ромбы, дельты пассивны"
+      "Подъём выше уровня плеч — подключаются трапеции, средняя дельта разгружается в пике",
+      "Большой вес с подъёмом большим пальцем вверх — внутренняя ротация плеча, стресс на манжету",
+      "Полное выпрямление локтя — момент на плечо растёт, риск тендинита бицепса",
+      "Раскачивание корпусом и помощь ногами — инерция вместо изоляции дельт",
+      "Поднятие плеч к ушам — превращается в шраг, средняя дельта разгружена"
     ]
   },
   "hanging-leg-raise": {
