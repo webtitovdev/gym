@@ -111,14 +111,20 @@ export function DayDetail({ dayId }: { dayId: string }) {
           const ex = library[pe.exerciseId];
           if (!ex) {
             return (
-              <div key={pe.exerciseId} style={{ padding: 12, background: pal.rose, borderRadius: 16, color: pal.plum }}>
+              <div key={`${pe.exerciseId}-${i}`} style={{ padding: 12, background: pal.rose, borderRadius: 16, color: pal.plum }}>
                 Упражнение не найдено: {pe.exerciseId}
               </div>
             );
           }
+          const inSuperset = pe.supersetGroup != null;
+          const isPairFirst = inSuperset && pe.supersetLabel === 'А';
+          const isPairLast = inSuperset && pe.supersetLabel === 'Б';
+          const label = inSuperset
+            ? `${pe.supersetGroup}${pe.supersetLabel || ''}`
+            : String(i + 1).padStart(2, '0');
           return (
             <a
-              key={pe.exerciseId}
+              key={`${pe.exerciseId}-${i}`}
               href={`#/exercise/${ex.id}`}
               style={{
                 background: pal.card,
@@ -127,13 +133,27 @@ export function DayDetail({ dayId }: { dayId: string }) {
                 display: 'flex',
                 alignItems: 'center',
                 gap: 11,
-                border: `1px solid ${pal.line}`,
+                border: inSuperset ? `1.5px solid ${pal.peach}` : `1px solid ${pal.line}`,
                 textDecoration: 'none',
                 color: pal.ink,
+                position: 'relative',
+                marginBottom: isPairFirst ? -4 : 0,
+                marginTop: isPairLast ? -4 : 0,
+                borderTopLeftRadius: isPairLast ? 8 : 16,
+                borderTopRightRadius: isPairLast ? 8 : 16,
+                borderBottomLeftRadius: isPairFirst ? 8 : 16,
+                borderBottomRightRadius: isPairFirst ? 8 : 16,
               }}
             >
-              <div style={{ width: 22, fontSize: 11, fontWeight: 900, color: pal.muteSoft, fontFamily: 'ui-monospace,monospace' }}>
-                {String(i + 1).padStart(2, '0')}
+              <div style={{
+                width: 26,
+                fontSize: 11,
+                fontWeight: 900,
+                color: inSuperset ? pal.terraD : pal.muteSoft,
+                fontFamily: 'ui-monospace,monospace',
+                textAlign: 'center',
+              }}>
+                {label}
               </div>
               <MuscleDot primary={ex.primaryMuscles} secondary={ex.secondaryMuscles} size={28} />
               <div style={{ flex: 1, minWidth: 0 }}>
@@ -142,7 +162,15 @@ export function DayDetail({ dayId }: { dayId: string }) {
                 </div>
                 <div style={{ fontSize: 11, color: pal.mute, fontWeight: 700, marginTop: 1 }}>
                   {pe.sets} × {formatRange(pe.repsMin, pe.repsMax)} · RIR {formatRange(pe.rirMin, pe.rirMax)} · {pe.restSec}с
+                  {inSuperset && (
+                    <span style={{ color: pal.terraD, fontWeight: 800 }}> · 🔗 суперсет</span>
+                  )}
                 </div>
+                {pe.note && (
+                  <div style={{ fontSize: 10.5, color: pal.terraD, fontWeight: 700, fontStyle: 'italic', marginTop: 2 }}>
+                    {pe.note}
+                  </div>
+                )}
               </div>
               <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke={pal.muteSoft} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
             </a>

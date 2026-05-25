@@ -142,6 +142,11 @@ export function Session({ sessionId, exerciseIdx = 0 }: Props) {
         <div style={{ flex: 1, textAlign: 'center' }}>
           <div style={{ fontSize: 11, color: pal.mute, fontWeight: 700, letterSpacing: 0.5 }}>
             FULL BODY {dayCode(day.id)}
+            {pe.supersetGroup != null && (
+              <span style={{ marginLeft: 6, color: pal.terraD }}>
+                · 🔗 СУПЕРСЕТ {pe.supersetGroup}{pe.supersetLabel || ''}
+              </span>
+            )}
           </div>
           <div style={{ fontSize: 13, fontWeight: 800 }}>
             Упражнение <span style={{ color: pal.peachD }}>{idx + 1}</span> / {totalEx}

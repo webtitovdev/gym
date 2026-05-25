@@ -35,6 +35,12 @@ export interface ProgramExercise {
   rirMin: number;
   rirMax: number;
   restSec: number;
+  /** If set, exercises with the same number are paired as a superset (e.g., 2А+2Б). */
+  supersetGroup?: number | null;
+  /** Optional letter for display ('А', 'Б') when in a superset. */
+  supersetLabel?: string | null;
+  /** Optional note. */
+  note?: string;
 }
 
 export interface Day {

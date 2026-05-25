@@ -48,13 +48,20 @@ export const EXERCISE_ILLUS: Record<string, IllusMap> = {
   'hammer-curl':                      { kind: 'curl',              tint: 'rose' },
   'cable-overhead-tricep-extension':  { kind: 'triceps_overhead',  tint: 'sand' },
   'hanging-leg-raise':                { kind: 'hang',              tint: 'lavender' },
+  // New (Full Body v2 — added 2026-05-24)
+  'seated-leg-curl':                  { kind: 'leg_curl',          tint: 'sand' },
+  'barbell-hip-thrust':               { kind: 'glute_bridge',      tint: 'rose' },
+  'standing-calf-raise':              { kind: 'calf_raise',        tint: 'peach' },
+  'hip-adduction':                    { kind: 'leg_curl',          tint: 'lavender' },
+  'hip-abduction':                    { kind: 'leg_curl',          tint: 'butter' },
+  'hack-squat':                       { kind: 'leg_curl',          tint: 'sand' },
+  'leg-press':                        { kind: 'leg_curl',          tint: 'sand' },
+  'leg-extension':                    { kind: 'leg_curl',          tint: 'butter' },
   // Orphans (kept for history)
   'chest-supported-row':              { kind: 'row_cable',         tint: 'lavender' },
   'cable-face-pull':                  { kind: 'row_cable',         tint: 'sand' },
   'cable-rear-delt-row':              { kind: 'row_cable',         tint: 'lavender' },
   'db-shrug':                         { kind: 'shrug',             tint: 'rose' },
-  'leg-press':                        { kind: 'leg_curl',          tint: 'sand' },
-  'leg-extension':                    { kind: 'leg_curl',          tint: 'butter' },
   'cable-crunch':                     { kind: 'hang',              tint: 'rose' },
   'biceps-curl-machine':              { kind: 'curl',              tint: 'rose' },
 };

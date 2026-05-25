@@ -599,6 +599,165 @@
       "Округление поясницы в стартовой позиции — высокий риск травмы, спина должна быть прямой"
     ]
   },
+  "seated-leg-curl": {
+    "id": "seated-leg-curl",
+    "name": "Seated Leg Curl",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["hamstrings"],
+    "secondaryMuscles": ["calves"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Leg_Curl/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=seated+leg+curl+technique",
+    "cues": [
+      "Сядь, спина прижата, ось коленей точно над осью вращения тренажёра",
+      "Валик ложится на ахиллово сухожилие, чуть выше пяток",
+      "Носки натянуты на себя — больше нагрузки на бицепс бедра",
+      "Сгибай ноги до прямого угла или чуть дальше — пиковое сокращение 1 сек",
+      "Опускай медленно 2-3 сек до полного разгибания, не теряй контроль"
+    ],
+    "mistakes": [
+      "Отрыв таза от сиденья в верхней точке — читинг через ягодицы и поясницу",
+      "Слишком большой вес и рывковое движение — амплитуда теряется",
+      "Неполное разгибание внизу — упускается ценная растяжка бицепса бедра",
+      "Носки вытянуты от себя — икры берут часть работы",
+      "Сжимание рукояток до белых костяшек — корпус напряжён, теряется фокус на ноги"
+    ]
+  },
+  "barbell-hip-thrust": {
+    "id": "barbell-hip-thrust",
+    "name": "Hip Thrust со штангой",
+    "equipment": "barbell",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["glutes"],
+    "secondaryMuscles": ["hamstrings", "quads"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Barbell_Hip_Thrust/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=barbell+hip+thrust+technique",
+    "cues": [
+      "Верх лопаток опирается на скамью, стопы на ширине плеч строго под коленями в верхней точке",
+      "Штанга на тазобедренных сгибах через подушку (обязательно)",
+      "Подбородок прижат к груди, взгляд на колени — нейтральная шея",
+      "Толкай через пятки, выводи таз до прямой линии плечи-колени",
+      "В верхней точке мощно сжимай ягодицы 1-2 сек — пиковое сокращение"
+    ],
+    "mistakes": [
+      "Переразгибание в пояснице вместо в тазобедренном суставе — травмоопасно",
+      "Стопы слишком далеко вперёд — нагрузка уходит на бицепс бедра, ягодицы недогружены",
+      "Толкание носками вместо пяток — квадрицепсы перетягивают работу",
+      "Неполное разгибание таза — ягодицы не получают пикового сокращения",
+      "Запрокидывание головы наверху — стресс на шейный отдел"
+    ]
+  },
+  "standing-calf-raise": {
+    "id": "standing-calf-raise",
+    "name": "Подъёмы на носки стоя",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["calves"],
+    "secondaryMuscles": [],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Calf_Raises/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=standing+calf+raise+technique",
+    "cues": [
+      "Носки на нижнем краю платформы, пятки висят свободно — полная амплитуда",
+      "Колени почти прямые, лёгкий сгиб — без блокировки",
+      "В нижней точке полная растяжка икр — пятки уходят максимально вниз",
+      "Выжимай носками до максимального подъёма, пауза 1 сек на пике",
+      "Темп 2-1-2: контроль и растяжка важнее веса"
+    ],
+    "mistakes": [
+      "Сгибание-разгибание коленей при подъёме — превращается в мини жим, икры разгружены",
+      "Слишком большой вес и микро-амплитуда — икры растут только в полной растяжке",
+      "Рывковые подъёмы без паузы внизу — упускается самая ценная фаза для камбаловидной",
+      "Носки на середине платформы — амплитуда режется"
+    ]
+  },
+  "hip-adduction": {
+    "id": "hip-adduction",
+    "name": "Сведение ног (приводящие)",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["adductors"],
+    "secondaryMuscles": [],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Adductor/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=hip+adduction+machine+technique",
+    "cues": [
+      "Сядь в тренажёр, спина прижата к спинке, держись за ручки",
+      "Внутренняя сторона колен/бёдер плотно к подушкам, ноги разведены",
+      "Своди колени силой приводящих, медленно и контролируемо",
+      "В сведении короткая пауза 1 сек — пиковое сокращение",
+      "Возврат в полную растяжку контролируемо, без удара пластин"
+    ],
+    "mistakes": [
+      "Большой вес и рывковое сведение — травмоопасно для приводящих",
+      "Помощь корпусом и наклон вперёд — теряется изоляция мышц",
+      "Неполное разведение — упускается ценная растяжка",
+      "Сжимание коленей силой вместо толчка бёдрами — нагрузка распыляется"
+    ]
+  },
+  "hip-abduction": {
+    "id": "hip-abduction",
+    "name": "Разведение ног (отводящие)",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["abductors"],
+    "secondaryMuscles": ["glutes"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Thigh_Abductor/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=hip+abduction+machine+technique",
+    "cues": [
+      "Сядь в тренажёр, спина прижата к спинке, держись за ручки",
+      "Внешняя сторона колен плотно к подушкам, ноги вместе",
+      "Разводи колени силой средней ягодичной, медленно",
+      "В разведении пауза 1 сек — чувствуй боковую ягодицу",
+      "Возврат контролируемо, не давай весу падать"
+    ],
+    "mistakes": [
+      "Наклон корпуса вперёд — задействуется поясница, ягодицы недогружены",
+      "Слишком большой вес и читинг бёдрами — отводящие пассивны",
+      "Рывковое разведение — теряется ощущение мышцы",
+      "Полное сведение коленей внизу — нагрузка снимается в начале амплитуды"
+    ]
+  },
+  "hack-squat": {
+    "id": "hack-squat",
+    "name": "Hack Squat",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["quads"],
+    "secondaryMuscles": ["glutes", "hamstrings"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hack_Squat/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=hack+squat+technique",
+    "cues": [
+      "Спина и плечи плотно прижаты к подушкам тренажёра",
+      "Стопы на ширине плеч на середине платформы, носки слегка наружу",
+      "Опускайся до угла 90° в колене или чуть глубже — без боли",
+      "Колени идут строго в направлении носков, не сваливаются внутрь",
+      "Жми пятками, не блокируй колени полностью наверху"
+    ],
+    "mistakes": [
+      "Колени сваливаются внутрь под весом — стресс на связки и мениски",
+      "Опускание носками вверх — пятки отрываются от платформы",
+      "Полная блокировка коленей сверху — нагрузка снимается с квадрицепсов",
+      "Слишком узкая постановка стоп — колени уходят далеко за носки",
+      "Резкое отбивание в нижней точке — пропуск самой ценной нижней фазы"
+    ]
+  },
   "incline-db-curl": {
     "id": "incline-db-curl",
     "name": "Бицепс на наклонной 30°",
