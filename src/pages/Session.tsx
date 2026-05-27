@@ -240,12 +240,14 @@ export function Session({ sessionId, exerciseIdx = 0 }: Props) {
       {/* Inline logger or done message */}
       {!allSetsDone ? (
         <SetLogPanel
+          key={`${ex.id}-${currentSetIdx}`}
           sessionId={sessionId}
           exerciseId={ex.id}
           setIndex={currentSetIdx}
           programExercise={pe}
           exercise={ex}
           prevSessionSets={prevForThisEx}
+          currentSessionSets={setsForThisEx}
         />
       ) : (
         <div style={{
@@ -361,7 +363,12 @@ export function Session({ sessionId, exerciseIdx = 0 }: Props) {
 }
 
 // ─────────────────────────────────────────────────────────────
-// Inline logger for the current set
+// Inline logger for the current set.
+// Defaults priority:
+//   1. Most recent set already logged in THIS session for this exercise
+//      (so set 2 carries over what you just did for set 1)
+//   2. Same setIndex from previous session (progression-aware)
+//   3. Bare program defaults (first ever session)
 // ─────────────────────────────────────────────────────────────
 function SetLogPanel({
   sessionId,
@@ -370,6 +377,7 @@ function SetLogPanel({
   programExercise,
   exercise,
   prevSessionSets,
+  currentSessionSets,
 }: {
   sessionId: number;
   exerciseId: string;
@@ -377,19 +385,24 @@ function SetLogPanel({
   programExercise: import('../types').ProgramExercise;
   exercise: import('../types').Exercise;
   prevSessionSets: SetLogRecord[];
+  currentSessionSets: SetLogRecord[];
 }) {
-  const defaults = computeSetDefaults(setIndex, prevSessionSets, programExercise, exercise);
+  // Look for most recent prior set in CURRENT session (highest setIndex < this one)
+  const priorInCurrent = [...currentSessionSets]
+    .filter((s) => s.setIndex < setIndex)
+    .sort((a, b) => b.setIndex - a.setIndex)[0];
+
+  const defaults = priorInCurrent
+    ? { weight: priorInCurrent.weight, reps: priorInCurrent.reps, rir: priorInCurrent.rir, progressionHint: undefined as string | undefined }
+    : computeSetDefaults(setIndex, prevSessionSets, programExercise, exercise);
+
   const [weight, setWeight] = useState(defaults.weight);
   const [reps, setReps] = useState(defaults.reps);
   const [rir, setRir] = useState(defaults.rir);
 
-  // Re-init when set changes
-  useEffect(() => {
-    setWeight(defaults.weight);
-    setReps(defaults.reps);
-    setRir(defaults.rir);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [setIndex, exerciseId]);
+  // Note: SetLogPanel is keyed on (exerciseId, setIndex) at the call site,
+  // so it remounts when the set advances. useState initial values pick up
+  // the freshly-computed defaults — no useEffect needed.
 
   const save = async () => {
     await logSet({
@@ -404,6 +417,7 @@ function SetLogPanel({
 
   const prevSet = prevSessionSets.find((s) => s.setIndex === setIndex);
   const sameAsLast =
+    !priorInCurrent &&
     prevSet && prevSet.weight === defaults.weight && prevSet.reps === defaults.reps;
 
   return (
@@ -412,16 +426,19 @@ function SetLogPanel({
         <div style={{ fontSize: 11, color: pal.mute, fontWeight: 800, textTransform: 'uppercase', letterSpacing: 0.5 }}>
           Записать сет {setIndex + 1}
         </div>
-        {sameAsLast && (
+        {priorInCurrent ? (
+          <div style={{ fontSize: 10, color: pal.terra, fontWeight: 800, background: pal.peachL, padding: '2px 8px', borderRadius: 100 }}>
+            ← из сета {priorInCurrent.setIndex + 1}
+          </div>
+        ) : sameAsLast ? (
           <div style={{ fontSize: 10, color: pal.terra, fontWeight: 800, background: pal.peachL, padding: '2px 8px', borderRadius: 100 }}>
             как в прошлый раз
           </div>
-        )}
-        {!sameAsLast && defaults.progressionHint && (
+        ) : defaults.progressionHint ? (
           <div style={{ fontSize: 10, color: pal.terra, fontWeight: 800, background: pal.peachL, padding: '2px 8px', borderRadius: 100, maxWidth: 180, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
             💡 {defaults.progressionHint}
           </div>
-        )}
+        ) : null}
       </div>
       <div style={{ display: 'flex', gap: 10, marginTop: 10 }}>
         <Stepper value={weight} onChange={setWeight} step={exercise.weightIncrement} unit="кг" />

@@ -301,48 +301,93 @@ export function Today() {
         ))}
       </div>
 
-      {/* Up next */}
-      {nextDay && (
-        <div style={{ padding: '20px 20px 0' }}>
-          <div style={{ fontSize: 12, color: pal.mute, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 8 }}>
-            Дальше
-          </div>
-          <a
-            href={`#/day/${nextDay.id}`}
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              background: pal.card,
-              borderRadius: 18,
-              padding: '12px 14px',
-              border: `1px solid ${pal.line}`,
-              textDecoration: 'none',
-              color: pal.ink,
-            }}
-          >
-            <div style={{
-              width: 38,
-              height: 38,
-              borderRadius: 12,
-              background: pal.lavender,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              fontWeight: 900,
-              color: pal.ink,
-            }}>
-              {dayCode(nextDay.id)}
-            </div>
-            <div style={{ flex: 1, minWidth: 0 }}>
-              <div style={{ fontSize: 14, fontWeight: 800 }}>Full Body {dayCode(nextDay.id)}</div>
-              <div style={{ fontSize: 11, color: pal.mute, fontWeight: 600 }}>
-                {DOW_RU_SHORT[nextDay.dayOfWeek]} · {nextDay.exercises.length} упражнений
-              </div>
-            </div>
-          </a>
+      {/* All program days */}
+      <div style={{ padding: '20px 20px 0' }}>
+        <div style={{ fontSize: 12, color: pal.mute, fontWeight: 800, letterSpacing: 0.5, textTransform: 'uppercase', marginBottom: 8 }}>
+          Все дни программы
         </div>
-      )}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+          {program.days.map((d) => {
+            const dayIdx = ((d.dayOfWeek || 7) - 1);
+            const isToday = d.dayOfWeek === todayDow;
+            const isDone = doneIdx.includes(dayIdx);
+            const totalSets = d.exercises.reduce((s, e) => s + e.sets, 0);
+            const tints: Record<string, string> = { '1': pal.peachL, '2': pal.lavender, '3': pal.butter };
+            const accentBg = tints[d.id] || pal.peachL;
+            return (
+              <a
+                key={d.id}
+                href={`#/day/${d.id}`}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: 12,
+                  background: pal.card,
+                  borderRadius: 18,
+                  padding: '12px 14px',
+                  border: isToday ? `1.5px solid ${pal.peach}` : `1px solid ${pal.line}`,
+                  textDecoration: 'none',
+                  color: pal.ink,
+                  position: 'relative',
+                }}
+              >
+                <div style={{
+                  width: 42,
+                  height: 42,
+                  borderRadius: 13,
+                  background: accentBg,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontWeight: 900,
+                  fontSize: 18,
+                  color: pal.ink,
+                  flexShrink: 0,
+                }}>
+                  {dayCode(d.id)}
+                </div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, flexWrap: 'wrap' }}>
+                    <div style={{ fontSize: 14, fontWeight: 800 }}>Full Body {dayCode(d.id)}</div>
+                    {isToday && (
+                      <span style={{ fontSize: 9, color: pal.terraD, fontWeight: 900, background: pal.peachL, padding: '1px 7px', borderRadius: 100, letterSpacing: 0.4, textTransform: 'uppercase' }}>
+                        сегодня
+                      </span>
+                    )}
+                    {isDone && !isToday && (
+                      <span style={{ fontSize: 9, color: '#2d7a5f', fontWeight: 900, background: '#c8e6d4', padding: '1px 7px', borderRadius: 100, letterSpacing: 0.4, textTransform: 'uppercase' }}>
+                        сделано
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontSize: 11, color: pal.mute, fontWeight: 700, marginTop: 2 }}>
+                    {DOW_RU_SHORT[d.dayOfWeek]} · {d.exercises.length} упр · {totalSets} сетов
+                  </div>
+                </div>
+                {isDone && (
+                  <div style={{
+                    width: 24,
+                    height: 24,
+                    borderRadius: 12,
+                    background: pal.terra,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    flexShrink: 0,
+                  }}>
+                    <svg width="12" height="9" viewBox="0 0 12 9">
+                      <path d="M1 5l3.5 3.5L11 1" stroke="#fff" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </div>
+                )}
+                {!isDone && (
+                  <svg width="6" height="10" viewBox="0 0 6 10"><path d="M1 1l4 4-4 4" stroke={pal.muteSoft} strokeWidth="1.6" fill="none" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                )}
+              </a>
+            );
+          })}
+        </div>
+      </div>
 
       <BottomNav active="home" />
     </div>
