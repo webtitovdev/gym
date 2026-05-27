@@ -599,6 +599,188 @@
       "Округление поясницы в стартовой позиции — высокий риск травмы, спина должна быть прямой"
     ]
   },
+  "incline-chest-press-machine": {
+    "id": "incline-chest-press-machine",
+    "name": "Жим в тренажёре на наклонной (грудь)",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["upper_chest"],
+    "secondaryMuscles": ["front_delts", "triceps"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Incline_Chest_Press/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Leverage_Incline_Chest_Press/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=incline+chest+press+machine+technique",
+    "cues": [
+      "Настрой сиденье так, чтобы рукоятки были на уровне верха груди (не сосков)",
+      "Лопатки сведены и плотно прижаты к спинке весь подход",
+      "Локти движутся под 45° к корпусу, не разводи в стороны",
+      "В негативной фазе доводи до растяжения грудных, не дальше",
+      "В верхней точке не блокируй локти — сохраняй напряжение"
+    ],
+    "mistakes": [
+      "Высоко поднятые плечи к ушам — работают трапеции и дельты вместо груди",
+      "Слишком высокое сиденье — нагрузка уходит с верха груди на плечи",
+      "Отрыв спины от спинки в концентрике — теряется база, риск плеча",
+      "Резкое отбивание в негативе — упускается продуктивная фаза"
+    ]
+  },
+  "machine-shoulder-press": {
+    "id": "machine-shoulder-press",
+    "name": "Жим над головой в тренажёре",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["front_delts"],
+    "secondaryMuscles": ["side_delts", "triceps"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Shoulder_Military_Press/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Machine_Shoulder_Military_Press/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=machine+shoulder+press+technique",
+    "cues": [
+      "Сиденье отрегулируй так, чтобы рукоятки были на уровне плеч в стартовой позиции",
+      "Спина плотно прижата к спинке, поясница не выгибается",
+      "Жми вверх по дуге, плечи опущены (не поднимай к ушам)",
+      "Локти не блокируй полностью наверху — сохраняй напряжение в дельтах",
+      "Опускай рукоятки до уровня ушей, без рывков"
+    ],
+    "mistakes": [
+      "Сильный прогиб поясницы — превращается в наклонный жим, нагрузка уходит на верх груди",
+      "Подъём плеч к ушам — работают трапеции, дельты разгружены",
+      "Опускание ниже ушей — стресс на капсулу плеча, риск импинджмента",
+      "Полная блокировка локтей наверху — нагрузка снимается с дельт"
+    ]
+  },
+  "cable-bicep-curl": {
+    "id": "cable-bicep-curl",
+    "name": "Бицепс в блоке стоя",
+    "equipment": "cable",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["biceps"],
+    "secondaryMuscles": ["forearms"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Cable_Curl/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Standing_Biceps_Cable_Curl/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=cable+bicep+curl+technique",
+    "cues": [
+      "Канат на нижнем блоке, прямая или EZ рукоять",
+      "Стой прямо, корпус неподвижен, локти прижаты к корпусу и зафиксированы",
+      "Сгибай только в локте — плечо неподвижно",
+      "В верхней точке короткая пауза — пиковое сокращение бицепса",
+      "Опускай медленно 2-3 сек до полного разгибания, без отдыха внизу"
+    ],
+    "mistakes": [
+      "Локти ползут вперёд при подъёме — подключаются дельты, бицепс разгружен в пике",
+      "Раскачивание корпусом — инерция вместо работы бицепса",
+      "Неполное разгибание внизу — упускается растяжка длинной головки",
+      "Слишком большой вес и короткая амплитуда — гипертрофия страдает, эго-лифт"
+    ]
+  },
+  "seated-calf-raise": {
+    "id": "seated-calf-raise",
+    "name": "Икры сидя в тренажёре",
+    "equipment": "machine",
+    "weightIncrement": 5,
+    "unilateral": false,
+    "primaryMuscles": ["calves"],
+    "secondaryMuscles": [],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Calf_Raise/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Seated_Calf_Raise/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=seated+calf+raise+technique",
+    "cues": [
+      "Сядь, подушки лежат на нижней части квадрицепса (выше колена)",
+      "Стопы на нижнем краю платформы — пятки висят свободно",
+      "В нижней точке полная растяжка — пятки уходят максимально вниз",
+      "Подъём на носки до максимума, пауза 1 сек на пике",
+      "Темп 2-1-2 — растяжка и контроль важнее веса"
+    ],
+    "mistakes": [
+      "Микро-амплитуда — камбаловидная растёт только в полной растяжке",
+      "Рывковые подъёмы — упускается самая ценная фаза",
+      "Стопы на середине платформы — амплитуда режется",
+      "Слишком тяжёлый вес и короткая амплитуда — эго-лифт без стимула"
+    ]
+  },
+  "hyperextension": {
+    "id": "hyperextension",
+    "name": "Гиперэкстензия 45°",
+    "equipment": "bodyweight",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["lower_back"],
+    "secondaryMuscles": ["glutes", "hamstrings"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hyperextensions_Back_Extensions/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Hyperextensions_Back_Extensions/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=hyperextension+45+technique",
+    "cues": [
+      "Бёдра упираются в подушку, край подушки на уровне тазобедренного сгиба",
+      "Спина нейтральная, не округляй и не прогибай чрезмерно",
+      "Опускайся за счёт тазобедренного сгиба, не за счёт сгибания спины",
+      "Поднимайся до линии корпус-ноги (не выше) — без переразгибания",
+      "Темп 2-1-2 — без раскачки и инерции"
+    ],
+    "mistakes": [
+      "Переразгибание в верхней точке — стресс на поясничные позвонки",
+      "Округление спины внизу — высокий риск травмы дисков",
+      "Раскачивание для амплитуды — теряется нагрузка на целевые мышцы",
+      "Слишком тяжёлый блин — техника ломается, поясница перегружена"
+    ]
+  },
+  "captains-chair-knee-raise": {
+    "id": "captains-chair-knee-raise",
+    "name": "Подъём коленей в капитанском стуле",
+    "equipment": "bodyweight",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["abs"],
+    "secondaryMuscles": ["obliques"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Hip_Raise_On_Parallel_Bars/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/Knee_Hip_Raise_On_Parallel_Bars/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=captains+chair+knee+raise+technique",
+    "cues": [
+      "Упор на предплечья, спина плотно прижата к спинке",
+      "Стартовая позиция — ноги висят прямо вниз, плечи активны (не виси на расслабленных)",
+      "Подними колени к груди, скручивая таз вверх — это главный двигатель пресса",
+      "В верхней точке таз подкручен, пиковое сокращение 1 сек",
+      "Опускай медленно 2-3 сек, контролируй — без раскачки"
+    ],
+    "mistakes": [
+      "Раскачивание корпусом и инерция — пресс почти не работает",
+      "Подъём только бёдер без подкручивания таза — работают сгибатели бедра",
+      "Прогиб поясницы внизу — теряется натяжение пресса, риск спины",
+      "Шея напряжена и подбородок вытянут — стресс на шейный отдел"
+    ]
+  },
+  "lat-pulldown-neutral": {
+    "id": "lat-pulldown-neutral",
+    "name": "Lat Pulldown нейтральным хватом",
+    "equipment": "cable",
+    "weightIncrement": 2.5,
+    "unilateral": false,
+    "primaryMuscles": ["lats"],
+    "secondaryMuscles": ["biceps", "mid_back", "rear_delts"],
+    "exerciseDbId": null,
+    "imageUrl": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/V-Bar_Pulldown/0.jpg",
+    "imageUrlEnd": "https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/exercises/V-Bar_Pulldown/1.jpg",
+    "youtubeUrl": "https://www.youtube.com/results?search_query=neutral+grip+lat+pulldown+technique",
+    "cues": [
+      "V-рукоятка или close-grip handle, ладони друг к другу (нейтральный хват)",
+      "Корпус отклонён назад на 10-15°, грудь подана вверх",
+      "Тяни локтями вниз-к-бокам, фокус на широчайших — не бицепсами",
+      "Рукоятка к верху груди, лопатки опускаются и сводятся",
+      "В верхней точке полное растяжение широчайших, без потери контроля"
+    ],
+    "mistakes": [
+      "Тяга только бицепсами с пассивными лопатками — широчайшие выключены",
+      "Раскачивание корпусом и читинг — нагрузка через инерцию",
+      "Слишком большой вес — неполная амплитуда, теряется растяжка сверху",
+      "Локти разлетаются в стороны — теряется специфика нейтрального хвата"
+    ]
+  },
   "seated-leg-curl": {
     "id": "seated-leg-curl",
     "name": "Seated Leg Curl",
@@ -628,7 +810,7 @@
   },
   "barbell-hip-thrust": {
     "id": "barbell-hip-thrust",
-    "name": "Hip Thrust со штангой",
+    "name": "Hip Thrust",
     "equipment": "barbell",
     "weightIncrement": 2.5,
     "unilateral": false,

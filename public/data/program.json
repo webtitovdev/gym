@@ -3,49 +3,54 @@
   "days": [
     {
       "id": "1",
-      "name": "Full Body",
+      "name": "Квадры + Грудь",
       "dayOfWeek": 1,
       "exercises": [
-        { "exerciseId": "leg-press", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 2, "rirMax": 2, "restSec": 150, "note": "стопы выше, ROM без боли" },
-        { "exerciseId": "incline-db-press-30", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120, "supersetGroup": 2, "supersetLabel": "А" },
-        { "exerciseId": "lat-pulldown-wide", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120, "supersetGroup": 2, "supersetLabel": "Б" },
-        { "exerciseId": "seated-leg-curl", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 90, "supersetGroup": 3, "supersetLabel": "А" },
-        { "exerciseId": "incline-db-curl", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 0, "rirMax": 1, "restSec": 90, "supersetGroup": 3, "supersetLabel": "Б" },
-        { "exerciseId": "cable-pushdown-rope", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 4, "supersetLabel": "А" },
-        { "exerciseId": "standing-calf-raise", "sets": 3, "repsMin": 12, "repsMax": 20, "rirMin": 0, "rirMax": 0, "restSec": 75, "supersetGroup": 4, "supersetLabel": "Б" },
-        { "exerciseId": "hip-adduction", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 5, "supersetLabel": "А" },
-        { "exerciseId": "hip-abduction", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 5, "supersetLabel": "Б" }
+        { "exerciseId": "leg-press", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 2, "rirMax": 2, "restSec": 150, "note": "стопы чуть выше, безболезненная глубина" },
+        { "exerciseId": "incline-chest-press-machine", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "lat-pulldown-wide", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "chest-supported-row", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "machine-shoulder-press", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "lying-leg-curl", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "cable-lateral-raise-unilateral", "sets": 3, "repsMin": 12, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "cable-bicep-curl", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "cable-pushdown-rope", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "seated-calf-raise", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 0, "restSec": 60 }
       ]
     },
     {
       "id": "2",
-      "name": "Full Body",
+      "name": "Задняя цепь + Спина",
       "dayOfWeek": 3,
       "exercises": [
-        { "exerciseId": "barbell-hip-thrust", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 150 },
-        { "exerciseId": "one-arm-db-row", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120, "supersetGroup": 2, "supersetLabel": "А" },
-        { "exerciseId": "chest-press-machine", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120, "supersetGroup": 2, "supersetLabel": "Б" },
-        { "exerciseId": "cable-lateral-raise-unilateral", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 3, "supersetLabel": "А" },
-        { "exerciseId": "reverse-pec-deck", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 3, "supersetLabel": "Б" },
-        { "exerciseId": "lying-leg-curl", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 75, "supersetGroup": 4, "supersetLabel": "А" },
-        { "exerciseId": "standing-calf-raise", "sets": 3, "repsMin": 12, "repsMax": 20, "rirMin": 0, "rirMax": 0, "restSec": 75, "supersetGroup": 4, "supersetLabel": "Б" },
-        { "exerciseId": "hanging-leg-raise", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 60, "note": "опционально" }
+        { "exerciseId": "barbell-hip-thrust", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 150, "note": "в зале есть машина — используй её; иначе со штангой" },
+        { "exerciseId": "seated-cable-row-v", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120, "note": "нейтральная рукоять" },
+        { "exerciseId": "chest-press-machine", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "leg-extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 1, "rirMax": 2, "restSec": 90, "note": "контролируемо, без боли" },
+        { "exerciseId": "reverse-pec-deck", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "hyperextension", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 1, "rirMax": 2, "restSec": 90 },
+        { "exerciseId": "cable-lateral-raise-unilateral", "sets": 3, "repsMin": 12, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "cable-bicep-curl", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "cable-overhead-tricep-extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "captains-chair-knee-raise", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 60 }
       ]
     },
     {
       "id": "3",
-      "name": "Full Body",
+      "name": "Плечи + Руки",
       "dayOfWeek": 5,
       "exercises": [
-        { "exerciseId": "hack-squat", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 1, "rirMax": 2, "restSec": 150, "note": "альтернатива: Leg Extension" },
-        { "exerciseId": "seated-cable-row-v", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 1, "restSec": 120, "supersetGroup": 2, "supersetLabel": "А" },
-        { "exerciseId": "pec-deck", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 120, "supersetGroup": 2, "supersetLabel": "Б" },
-        { "exerciseId": "db-lateral-raise", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 3, "supersetLabel": "А" },
-        { "exerciseId": "reverse-pec-deck", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 3, "supersetLabel": "Б" },
-        { "exerciseId": "hammer-curl", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 4, "supersetLabel": "А" },
-        { "exerciseId": "cable-overhead-tricep-extension", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 4, "supersetLabel": "Б" },
-        { "exerciseId": "hip-adduction", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 5, "supersetLabel": "А" },
-        { "exerciseId": "hip-abduction", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 75, "supersetGroup": 5, "supersetLabel": "Б" }
+        { "exerciseId": "hack-squat", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 2, "rirMax": 2, "restSec": 150, "note": "неполная глубина, без боли · альт: Leg Press" },
+        { "exerciseId": "lat-pulldown-neutral", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "pec-deck", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 120 },
+        { "exerciseId": "chest-supported-row", "sets": 3, "repsMin": 10, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120, "note": "другой хват, чем в Дне A" },
+        { "exerciseId": "machine-shoulder-press", "sets": 3, "repsMin": 8, "repsMax": 12, "rirMin": 1, "rirMax": 2, "restSec": 120 },
+        { "exerciseId": "lying-leg-curl", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 1, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "reverse-pec-deck", "sets": 3, "repsMin": 15, "repsMax": 20, "rirMin": 0, "rirMax": 1, "restSec": 90 },
+        { "exerciseId": "hip-adduction", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "hip-abduction", "sets": 3, "repsMin": 12, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "cable-bicep-curl", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 1, "restSec": 75 },
+        { "exerciseId": "seated-calf-raise", "sets": 3, "repsMin": 10, "repsMax": 15, "rirMin": 0, "rirMax": 0, "restSec": 60 }
       ]
     }
   ]

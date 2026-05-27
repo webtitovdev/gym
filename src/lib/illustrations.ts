@@ -57,6 +57,14 @@ export const EXERCISE_ILLUS: Record<string, IllusMap> = {
   'hack-squat':                       { kind: 'leg_curl',          tint: 'sand' },
   'leg-press':                        { kind: 'leg_curl',          tint: 'sand' },
   'leg-extension':                    { kind: 'leg_curl',          tint: 'butter' },
+  // New (Full Body v3 — added 2026-05-27)
+  'incline-chest-press-machine':      { kind: 'press_incline',     tint: 'peach' },
+  'machine-shoulder-press':           { kind: 'press_seated',      tint: 'butter' },
+  'cable-bicep-curl':                 { kind: 'curl',              tint: 'rose' },
+  'seated-calf-raise':                { kind: 'calf_raise',        tint: 'peach' },
+  'hyperextension':                   { kind: 'glute_bridge',      tint: 'sand' },
+  'captains-chair-knee-raise':        { kind: 'hang',              tint: 'lavender' },
+  'lat-pulldown-neutral':             { kind: 'pulldown',          tint: 'lavender' },
   // Orphans (kept for history)
   'chest-supported-row':              { kind: 'row_cable',         tint: 'lavender' },
   'cable-face-pull':                  { kind: 'row_cable',         tint: 'sand' },
