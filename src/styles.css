@@ -22,6 +22,8 @@ button, a {
   -webkit-user-select: none;
   user-select: none;
   font-family: inherit;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 .tabular-nums {
