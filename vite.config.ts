@@ -29,11 +29,21 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,json,png,woff2}'],
+        // Force SW to take over immediately on new deploys
+        clientsClaim: true,
+        skipWaiting: true,
         runtimeCaching: [
           {
             urlPattern: ({ url }) => url.pathname.endsWith('.json'),
-            handler: 'StaleWhileRevalidate',
-            options: { cacheName: 'data-cache' },
+            // NetworkFirst: always try fresh, fall back to cache when offline.
+            // Avoids stale data after content updates.
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'data-cache-v2',
+              networkTimeoutSeconds: 3,
+              expiration: { maxAgeSeconds: 60 * 60 * 24 * 7 },
+              cacheableResponse: { statuses: [0, 200] },
+            },
           },
           {
             urlPattern: ({ request }) => request.destination === 'image',
